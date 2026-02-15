@@ -1,5 +1,6 @@
 import { useGame } from './game/context'
 import { Lobby } from './pages/Lobby'
+import { GameConfig } from './pages/GameConfig'
 import { Bidding } from './pages/Bidding'
 import { RevealBids } from './pages/RevealBids'
 import { Scoring } from './pages/Scoring'
@@ -42,6 +43,8 @@ function GameRouter() {
   }
 
   switch (phase) {
+    case 'config':
+      return <GameConfig />
     case 'bidding':
       return <Bidding />
     case 'reveal_bids':

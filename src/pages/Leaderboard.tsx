@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useGame } from '../game/context'
-import { MAX_ROUNDS } from '../game/types'
 
 export function Leaderboard() {
   const { game, players, scores, currentPlayer, nextRound } = useGame()
   const round = game?.round_number ?? 1
+  const totalRounds = game?.total_rounds ?? 10
 
   const ranked = useMemo(() => {
     return players
@@ -23,7 +23,7 @@ export function Leaderboard() {
   }, [players, scores, round])
 
   const isAdmin = currentPlayer?.is_admin ?? false
-  const isFinalRound = round >= MAX_ROUNDS
+  const isFinalRound = round >= totalRounds
 
   return (
     <div className="page">
@@ -43,9 +43,8 @@ export function Leaderboard() {
               {hasBonus && <span className="score-bonus-icon">&#9733;</span>}
               <span className="score-name">{player.name}</span>
               <span
-                className={`score-points ${
-                  roundPoints >= 0 ? 'points-positive' : 'points-negative'
-                }`}
+                className={`score-points ${roundPoints >= 0 ? 'points-positive' : 'points-negative'
+                  }`}
               >
                 {roundPoints >= 0 ? '+' : ''}
                 {roundPoints}

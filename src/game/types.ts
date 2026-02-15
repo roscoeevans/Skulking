@@ -4,6 +4,7 @@
 
 export type Phase =
   | 'lobby'
+  | 'config'
   | 'bidding'
   | 'reveal_bids'
   | 'scoring'
@@ -14,6 +15,7 @@ export interface Game {
   id: number
   phase: Phase
   round_number: number
+  total_rounds: number
   created_at: string
 }
 
@@ -61,7 +63,6 @@ export const EMPTY_BONUSES: Bonuses = {
   piratesDefeatMermaids: 0,
 }
 
-export const MAX_ROUNDS = 10
 export const MAX_PLAYERS = 10
 
 /** localStorage key for persisting player identity */

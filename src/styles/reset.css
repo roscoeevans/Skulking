@@ -2,7 +2,9 @@
    Minimal Reset
    ============================================================ */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,8 +19,8 @@ html {
 
 body {
   font: var(--text-body);
-  color: var(--color-gray-900);
-  background: var(--gradient-mesh), var(--color-gray-100);
+  color: var(--color-white);
+  background: var(--gradient-mesh), var(--color-gray-900);
   background-attachment: fixed;
   max-width: 430px;
   margin: 0 auto;
@@ -28,12 +30,16 @@ body {
   overflow-x: hidden;
 }
 
-img, svg {
+img,
+svg {
   display: block;
   max-width: 100%;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font: inherit;
   color: inherit;
   background: none;
@@ -51,13 +57,17 @@ a {
   text-decoration: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
