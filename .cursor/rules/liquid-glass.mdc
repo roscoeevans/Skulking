@@ -1,0 +1,77 @@
+---
+description: iOS 26 Liquid Glass design system for web — translucent, refractive, depth-rich UI
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# iOS 26 Liquid Glass — Web Design Rules
+
+All UI should emulate Apple's iOS 26 Liquid Glass aesthetic. Every component, layout, and interaction must feel like layers of luminous, tinted glass floating over content.
+
+## Material & Transparency
+
+- Use `backdrop-filter: blur(40px) saturate(180%)` on glass surfaces.
+- Layer a semi-transparent background: `rgba(255,255,255,0.25)` (light) / `rgba(40,40,40,0.35)` (dark).
+- Add a subtle `border: 1px solid rgba(255,255,255,0.3)` for the glass edge highlight.
+- Tint glass panels with the underlying content's dominant color using low-opacity overlays.
+
+## Shape & Layout
+
+- Use large border-radius values (`20px`–`28px`) for cards and containers; pill shapes (`999px`) for buttons and tabs.
+- Float chrome elements (navbars, tab bars, FABs) above content with `box-shadow` and slight vertical offset — never anchor flush to edges.
+- Prefer generous padding and whitespace; the glass needs room to breathe.
+
+## Color Palette
+
+Default to Apple's system-style palette, adaptive to light/dark:
+
+| Role | Light | Dark |
+|------|-------|------|
+| Glass fill | `rgba(255,255,255,0.25)` | `rgba(40,40,40,0.35)` |
+| Glass border | `rgba(255,255,255,0.35)` | `rgba(255,255,255,0.12)` |
+| Primary accent | `#007AFF` | `#0A84FF` |
+| Secondary accent | `#5856D6` | `#5E5CE6` |
+| Destructive | `#FF3B30` | `#FF453A` |
+| Label primary | `rgba(0,0,0,0.85)` | `rgba(255,255,255,0.92)` |
+| Label secondary | `rgba(0,0,0,0.50)` | `rgba(255,255,255,0.55)` |
+
+## Shadows & Depth
+
+- Soft, layered shadows: `box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)`.
+- Elevated glass gets stronger shadow; recessed glass gets lighter.
+- Never use harsh, solid drop shadows.
+
+## Icons & Typography
+
+- Use filled, solid icons (SF Symbols style) — not outlined strokes.
+- Font stack: `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif`.
+- Bold weight for titles, regular/medium for body. Ensure strong contrast on glass.
+
+## Motion & Interaction
+
+- Use spring-based CSS transitions: `transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)`.
+- Interactive elements should scale subtly on press: `transform: scale(0.97)`.
+- Page transitions should slide with depth — layers translate on Z-axis or scale/fade.
+- Hover states: brighten the glass fill slightly and intensify the border highlight.
+
+## Example: Glass Card Component
+
+```css
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+.glass-card:active {
+  transform: scale(0.97);
+}
+```

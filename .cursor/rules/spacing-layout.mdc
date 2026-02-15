@@ -1,0 +1,71 @@
+---
+description: Spacing scale and mobile-only layout system
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# Spacing & Layout
+
+Mobile-only. Design for 390px (iPhone 15) as the base, scaling gracefully to 430px (Pro Max).
+
+## Spacing Scale
+
+Use multiples of 4px. Reference tokens, never raw pixel values.
+
+```css
+:root {
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+}
+```
+
+## Page Margins
+
+- Horizontal page padding: `--space-20` (20px) on each side.
+- This matches iOS system margins exactly.
+
+## Viewport & Safe Areas
+
+```css
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+```
+
+- Always use `100dvh` (dynamic viewport height), never `100vh`.
+- Respect safe areas for notch and home indicator.
+
+## Layout Patterns
+
+- **Single column only.** No multi-column grids on mobile.
+- **Stack with gap.** Use flexbox column with `gap` for vertical rhythm.
+- **Section spacing**: `--space-32` between major sections, `--space-16` between related items.
+- **Card insets**: `--space-16` to `--space-20` internal padding.
+- **Touch targets**: minimum `44px` height and width for any tappable element.
+
+## Rules
+
+1. **No horizontal scroll.** Everything fits within viewport width minus margins.
+2. **No fixed widths.** Use `width: 100%` or `max-width` with flexible containers.
+3. **Bottom nav floats.** If there's a tab bar, it floats with `--space-12` from the bottom edge (above safe area), centered, with glass styling.
+4. **Content lives below the fold.** Hero/splash areas can use the full viewport; scrollable content starts beneath.

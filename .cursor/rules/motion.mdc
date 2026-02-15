@@ -1,0 +1,80 @@
+---
+description: Animation, transitions, and reduced-motion accessibility
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# Motion & Accessibility
+
+Animations should feel physical and fluid — like objects with real weight sliding on glass.
+
+## Easing Curves
+
+```css
+:root {
+  /* Spring — bouncy, playful (buttons, cards, game elements) */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Smooth — polished, confident (page transitions, modals) */
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Snap — quick and decisive (toggles, tab switches) */
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Decelerate — entering elements (sliding in) */
+  --ease-decel: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Accelerate — exiting elements (sliding out) */
+  --ease-accel: cubic-bezier(0.4, 0, 1, 1);
+}
+```
+
+## Duration Scale
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--dur-instant` | `100ms` | Hover/focus highlights |
+| `--dur-fast` | `200ms` | Toggles, small state changes |
+| `--dur-normal` | `350ms` | Card transitions, button feedback |
+| `--dur-slow` | `500ms` | Page transitions, modal entry |
+| `--dur-dramatic` | `700ms` | Hero reveals, splash animations |
+
+## Interaction Feedback
+
+- **Tap/press**: `transform: scale(0.97)` with `--dur-fast` and `--ease-spring`.
+- **Hover** (for dev preview): brighten glass fill, intensify border.
+- **Success**: brief `scale(1.05)` pulse then settle to `scale(1)`.
+- **Error**: horizontal shake — `translateX` keyframes (-4px, 4px, -2px, 0).
+
+## Page Transitions
+
+- **Forward navigation**: new view slides in from right, `translateX(100%) → 0`.
+- **Back navigation**: current view slides out to right, `translateX(0) → 100%`.
+- **Modals/sheets**: slide up from `translateY(100%)` with `--ease-decel`.
+- **Dismissal**: slide down with `--ease-accel`.
+
+## Reduced Motion
+
+Always provide reduced-motion fallbacks. Replace movement with opacity.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+## Focus States
+
+- Focus ring: `box-shadow: 0 0 0 3px rgba(90,200,250,0.4)` on interactive elements.
+- Never use `outline: none` without a visible replacement.
+- Focus ring uses `--color-sky` to stay on-brand.
+
+## Rules
+
+1. **No animation longer than 700ms.** This is a game — things should feel snappy.
+2. **Every transition needs an easing curve.** Never use `linear` unless for progress bars or continuous rotation.
+3. **Enter animations use deceleration, exit uses acceleration.** Objects slow down as they arrive, speed up as they leave.
+4. **Game elements can be bouncier** — use `--ease-spring` liberally for score counters, piece movements, and feedback.

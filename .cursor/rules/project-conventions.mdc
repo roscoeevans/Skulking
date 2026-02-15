@@ -1,0 +1,51 @@
+---
+description: Project-wide conventions — mobile game web app with Apple-grade polish
+alwaysApply: true
+---
+
+# Project Conventions
+
+## What This Is
+
+A private, mobile-only game web app. The UI must look and feel like Apple marketing material — premium, confident, immersive. Every pixel should feel intentional.
+
+## Platform Rules
+
+- **Mobile only.** Design for 390px–430px viewport width. No desktop layouts, no tablet breakpoints.
+- **Light mode only.** No dark theme. Glass surfaces assume a bright, colorful backdrop.
+- **Portrait orientation.** Landscape is not supported.
+- **PWA-ready.** Use `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` and respect safe areas.
+
+## Tone & Voice
+
+- **Apple marketing tone.** Short, declarative sentences. Confident, not clever. No exclamation marks, no emoji in UI copy.
+- **Verb-forward labels.** "Play Again" not "Click here to replay". "Share Score" not "Score sharing options".
+- **Minimal copy.** If it can be communicated with an icon and a word, do that.
+
+## Design Philosophy
+
+1. **Content over chrome.** The game IS the experience — UI should frame it, not compete.
+2. **Every surface is glass.** If something has a background, it should be translucent with blur.
+3. **Brand gradient as the canvas.** The spectrum gradient (amber → rose → sky) is the backdrop. Glass floats on top of it.
+4. **Depth, not decoration.** Shadows and layers communicate hierarchy. Don't add ornamental elements.
+5. **Animations serve the game.** Motion should celebrate wins, cushion losses, and guide attention.
+
+## Technical Preferences
+
+- Keep dependencies minimal — this is a simple app.
+- Vanilla CSS custom properties for theming (no Tailwind, no CSS-in-JS unless framework requires it).
+- Semantic HTML where possible.
+- SVG for icons — inline, not icon fonts.
+- Images optimized as WebP with fallbacks.
+
+## File Organization
+
+```
+/src
+  /assets       — SVGs, images, fonts
+  /styles       — Global CSS, tokens, reset
+  /components   — Reusable UI pieces
+  /game         — Game logic and state
+  /pages        — Screen-level views
+  index.html
+```

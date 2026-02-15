@@ -1,0 +1,105 @@
+---
+description: Brand design system — colors, gradients, tokens, and usage rules
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# Brand Design System
+
+## Core Brand Colors (Three Anchors)
+
+These are the three "true" brand colors. All other palette colors derive from gradients between them.
+
+| Name | Hex | RGB | Usage |
+|------|-----|-----|-------|
+| **Amber** | `#F7821B` | `rgb(247, 130, 27)` | Energy, warmth, CTAs, highlights |
+| **Rose** | `#E8497E` | `rgb(232, 73, 126)` | Accents, active states, alerts |
+| **Sky** | `#5AC8FA` | `rgb(90, 200, 250)` | Trust, links, primary actions, calm |
+
+## Gradient Intermediaries
+
+Colors that naturally appear along the gradient edges between anchors:
+
+| Name | Hex | Position |
+|------|-----|----------|
+| Coral | `#F06A42` | Amber → Rose (25%) |
+| Watermelon | `#EC5660` | Amber → Rose (50%) |
+| Magenta | `#D94E9A` | Rose → Sky (25%) |
+| Lavender | `#A874C4` | Rose → Sky (50%) |
+| Periwinkle | `#7A9EDF` | Rose → Sky (75%) |
+| Gold | `#C9A332` | Amber → Sky (25%) |
+| Seafoam | `#8AC486` | Amber → Sky (50%) |
+| Aqua | `#6DCEC1` | Amber → Sky (75%) |
+
+## Brand Gradients
+
+Always use these predefined gradients — never invent new gradient combos.
+
+```css
+/* Full spectrum — hero sections, backgrounds, splashes */
+--gradient-spectrum: linear-gradient(135deg, #F7821B 0%, #E8497E 50%, #5AC8FA 100%);
+
+/* Warm — CTAs, buttons, badges */
+--gradient-warm: linear-gradient(135deg, #F7821B 0%, #E8497E 100%);
+
+/* Cool — cards, info panels, secondary actions */
+--gradient-cool: linear-gradient(135deg, #E8497E 0%, #5AC8FA 100%);
+
+/* Sunset — ambient backgrounds, decorative */
+--gradient-sunset: linear-gradient(180deg, #F7821B 0%, #EC5660 50%, #5AC8FA 100%);
+
+/* Radial — icon backgrounds, avatar rings, orbs */
+--gradient-radial: radial-gradient(circle at 30% 30%, #F7821B, #E8497E 50%, #5AC8FA 100%);
+
+/* Mesh — full-bleed immersive backgrounds (use with multiple gradient layers) */
+--gradient-mesh:
+  radial-gradient(ellipse at 0% 0%, rgba(247,130,27,0.8) 0%, transparent 50%),
+  radial-gradient(ellipse at 100% 0%, rgba(232,73,126,0.8) 0%, transparent 50%),
+  radial-gradient(ellipse at 50% 100%, rgba(90,200,250,0.8) 0%, transparent 50%);
+```
+
+## CSS Custom Properties
+
+Define these at `:root`. All components must reference tokens — never hardcode hex values.
+
+```css
+:root {
+  /* Brand anchors */
+  --color-amber: #F7821B;
+  --color-rose: #E8497E;
+  --color-sky: #5AC8FA;
+
+  /* Intermediaries */
+  --color-coral: #F06A42;
+  --color-watermelon: #EC5660;
+  --color-magenta: #D94E9A;
+  --color-lavender: #A874C4;
+  --color-periwinkle: #7A9EDF;
+  --color-aqua: #6DCEC1;
+
+  /* Semantic tokens */
+  --color-primary: var(--color-sky);
+  --color-accent: var(--color-rose);
+  --color-highlight: var(--color-amber);
+  --color-destructive: var(--color-watermelon);
+
+  /* Neutrals (for glass surfaces, text, borders) */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-600: #4B5563;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+  --color-black: #000000;
+}
+```
+
+## Usage Rules
+
+1. **Gradients for decoration, solids for interaction.** Buttons use a single brand color (with hover shift); hero areas and backgrounds use gradients.
+2. **Never place brand-colored text on brand-colored backgrounds.** Use white or near-black text on gradient/colored surfaces.
+3. **Glass surfaces tint with brand colors.** When a glass card sits over a gradient background, its `background` should pick up a faint brand tint: `rgba(247,130,27,0.06)` for warm areas, `rgba(90,200,250,0.06)` for cool areas.
+4. **Gradient direction matters.** Warm colors (amber) sit top-left; cool colors (sky) sit bottom-right. This follows the natural light direction established by the brand.
+5. **Accessibility.** All text on gradient or colored backgrounds must meet WCAG AA contrast (4.5:1 body, 3:1 large text). Use white (`#FFFFFF`) text on brand colors. Note: Sky (`#5AC8FA`) is light — use dark text (`--color-gray-900`) on sky-colored surfaces instead of white.

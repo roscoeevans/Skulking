@@ -1,0 +1,229 @@
+/* ============================================================
+   App Layout & Page Styles
+   ============================================================ */
+
+/* ── Page Container ── */
+.page {
+  padding: var(--space-20);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn var(--dur-normal) var(--ease-decel);
+}
+
+/* ── Page Header ── */
+.page-header {
+  text-align: center;
+  padding: var(--space-40) 0 var(--space-24);
+}
+.page-header h1 {
+  font: var(--text-hero);
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.page-header .subtitle {
+  font: var(--text-callout);
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: var(--space-4);
+}
+
+/* ── Round Badge ── */
+.round-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: var(--space-6) var(--space-16);
+  font: var(--text-footnote);
+  color: var(--color-white);
+  margin: 0 auto var(--space-16);
+}
+
+/* ── Content Area ── */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* ── Actions (bottom-pinned) ── */
+.actions {
+  padding: var(--space-16) 0 var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: auto;
+}
+
+/* ── Player List (lobby) ── */
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font: var(--text-headline);
+  animation: slideIn var(--dur-normal) var(--ease-decel);
+}
+.player-row .player-name {
+  flex: 1;
+  color: var(--color-white);
+}
+.player-row .admin-badge {
+  font: var(--text-caption);
+  color: var(--color-amber);
+  background: rgba(247, 130, 27, 0.15);
+  padding: var(--space-2) var(--space-8);
+  border-radius: 999px;
+}
+
+/* ── Scoreboard Table ── */
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  padding: var(--space-12) var(--space-16);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: var(--space-12);
+}
+.score-row.has-bonus {
+  animation: goldGlow 2s ease infinite;
+  border-color: rgba(199, 163, 50, 0.4);
+}
+.score-rank {
+  font: var(--text-title-3);
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 24px;
+}
+.score-name {
+  flex: 1;
+  font: var(--text-headline);
+  color: var(--color-white);
+}
+.score-bonus-icon {
+  font-size: 16px;
+}
+.score-points {
+  font: var(--text-headline);
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 48px;
+  text-align: right;
+}
+.score-total {
+  font: var(--text-title-3);
+  color: var(--color-white);
+  min-width: 48px;
+  text-align: right;
+}
+
+/* ── Bid Reveal Table ── */
+.bid-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.bid-row {
+  display: flex;
+  align-items: center;
+  padding: var(--space-12) var(--space-16);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.bid-row .bid-name {
+  flex: 1;
+  font: var(--text-headline);
+  color: var(--color-white);
+}
+.bid-row .bid-value {
+  font: var(--text-title-2);
+  color: var(--color-white);
+}
+
+/* ── Bonus Section ── */
+.bonus-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+}
+.bonus-section-title {
+  font: var(--text-headline);
+  color: var(--color-gray-900);
+}
+.bonus-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+}
+.bonus-label {
+  font: var(--text-callout);
+  color: var(--color-gray-800);
+  flex: 1;
+}
+.bonus-value {
+  font: var(--text-footnote);
+  color: var(--color-gray-600);
+}
+
+/* ── Waiting State ── */
+.waiting {
+  text-align: center;
+  padding: var(--space-40) var(--space-20);
+}
+.waiting-text {
+  font: var(--text-title-3);
+  color: var(--color-white);
+}
+
+/* ── Section Label ── */
+.section-label {
+  font: var(--text-headline);
+  color: var(--color-white);
+  padding: var(--space-4) 0;
+}
+
+/* ── Form Group ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.form-label {
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Positive / Negative score colors ── */
+.points-positive {
+  color: #34D399;
+}
+.points-negative {
+  color: var(--color-watermelon);
+}
+
+/* ── Final standings crown ── */
+.crown {
+  font-size: 24px;
+  animation: pulse 1.5s ease infinite;
+}

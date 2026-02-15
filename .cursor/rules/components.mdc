@@ -1,0 +1,125 @@
+---
+description: Component patterns — glass buttons, inputs, modals, nav for mobile game UI
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# Component Patterns
+
+Every component is a piece of glass. Consistency matters — use these patterns exactly.
+
+## Buttons
+
+### Primary (solid brand color)
+```css
+.btn-primary {
+  background: var(--color-sky);
+  color: var(--color-gray-900);
+  font: var(--text-headline);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+  width: 100%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.2s ease;
+}
+.btn-primary:active { transform: scale(0.97); opacity: 0.85; }
+```
+
+### Secondary (glass)
+```css
+.btn-secondary {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px) saturate(150%);
+  color: var(--color-sky);
+  font: var(--text-headline);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+}
+```
+
+### Small / Pill
+- Same glass or solid style, but `padding: var(--space-8) var(--space-16)` and `min-height: 36px`.
+
+## Inputs
+
+```css
+.input {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 16px;
+  padding: var(--space-12) var(--space-16);
+  font: var(--text-body);
+  color: var(--color-gray-900);
+  min-height: 48px;
+}
+.input:focus {
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 3px rgba(90,200,250,0.25);
+  outline: none;
+}
+```
+
+## Cards
+
+Glass cards are the primary content container.
+
+```css
+.card {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  padding: var(--space-20);
+}
+```
+
+## Bottom Tab Bar (Floating Glass)
+
+```css
+.tab-bar {
+  position: fixed;
+  bottom: calc(var(--space-12) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-8);
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+.tab-bar-item {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+.tab-bar-item.active {
+  background: rgba(90,200,250,0.2);
+}
+```
+
+## Modals / Sheets
+
+- Slide up from the bottom (iOS-style sheet).
+- Use `border-radius: 24px 24px 0 0` on the sheet.
+- Full glass treatment on the sheet surface.
+- Dimmed backdrop: `background: rgba(0,0,0,0.3)` with `backdrop-filter: blur(8px)`.
+- Include a drag handle: `40px` wide, `4px` tall, centered, `border-radius: 999px`, `background: rgba(0,0,0,0.15)`.
+
+## Rules
+
+1. **All interactive elements are at least 44x44px.** No exceptions.
+2. **Full-width buttons** for primary actions. Pill buttons for secondary/inline.
+3. **No outlines or borders for visual-only decoration** — borders exist only on glass edges for the light-catch effect.
+4. **Icons inside buttons** sit left of text with `--space-8` gap.

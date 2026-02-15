@@ -1,0 +1,326 @@
+/* ============================================================
+   Component Styles — Glass System
+   ============================================================ */
+
+/* ── Glass Card ── */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-20);
+}
+
+/* ── Primary Button ── */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  background: var(--color-sky);
+  color: var(--color-gray-900);
+  font: var(--text-headline);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+  width: 100%;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    opacity var(--dur-fast) ease;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.btn-primary:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Secondary Button (glass) ── */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  color: var(--color-sky);
+  font: var(--text-headline);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+  width: 100%;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    background var(--dur-instant) ease;
+}
+.btn-secondary:active {
+  transform: scale(0.97);
+  background: var(--glass-bg-hover);
+}
+
+/* ── Warm Button (amber→rose gradient) ── */
+.btn-warm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  background: var(--color-amber);
+  color: var(--color-white);
+  font: var(--text-headline);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+  width: 100%;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    opacity var(--dur-fast) ease;
+}
+.btn-warm:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* ── Destructive Button ── */
+.btn-destructive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-destructive);
+  color: var(--color-white);
+  font: var(--text-headline);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-12) var(--space-24);
+  min-height: 50px;
+  width: 100%;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    opacity var(--dur-fast) ease;
+}
+.btn-destructive:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* ── Small Pill Button ── */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: var(--space-8) var(--space-16);
+  min-height: 36px;
+  font: var(--text-subhead);
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.btn-pill:active {
+  transform: scale(0.97);
+}
+
+/* ── Text Input ── */
+.input {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: var(--space-12) var(--space-16);
+  font: var(--text-body);
+  color: var(--color-gray-900);
+  min-height: 48px;
+  width: 100%;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.input:focus {
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 3px rgba(90, 200, 250, 0.25);
+}
+.input::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* ── Checkbox ── */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 44px;
+  padding: var(--space-8) 0;
+  font: var(--text-body);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.checkbox-row input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--color-gray-400);
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.checkbox-row input[type="checkbox"]:checked {
+  background: var(--color-sky);
+  border-color: var(--color-sky);
+}
+.checkbox-row input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── Modal / Sheet ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn var(--dur-fast) var(--ease-decel);
+}
+.modal-sheet {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 24px 24px 0 0;
+  border-top: 1px solid var(--glass-border);
+  padding: var(--space-12) var(--space-20) var(--space-32);
+  width: 100%;
+  max-width: 430px;
+  animation: slideUp var(--dur-slow) var(--ease-decel);
+}
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.15);
+  margin: 0 auto var(--space-20);
+}
+
+/* ── Number Picker ── */
+.number-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  justify-content: center;
+}
+.number-picker-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  font: var(--text-title-3);
+  color: var(--color-gray-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    background var(--dur-instant) ease,
+    border-color var(--dur-instant) ease;
+}
+.number-picker-btn:active {
+  transform: scale(0.93);
+}
+.number-picker-btn.selected {
+  background: var(--color-sky);
+  border-color: var(--color-sky);
+  color: var(--color-gray-900);
+  box-shadow: 0 4px 16px rgba(90, 200, 250, 0.35);
+}
+
+/* ── Counter (stepper) ── */
+.counter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+.counter-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  font: var(--text-title-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.counter-btn:active {
+  transform: scale(0.93);
+}
+.counter-btn:disabled {
+  opacity: 0.3;
+}
+.counter-value {
+  font: var(--text-title-2);
+  min-width: 28px;
+  text-align: center;
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes goldGlow {
+  0%, 100% { box-shadow: var(--glass-shadow), 0 0 0 rgba(199, 163, 50, 0); }
+  50% { box-shadow: var(--glass-shadow), 0 0 20px rgba(199, 163, 50, 0.3); }
+}
+
+/* ── Waiting dots ── */
+.waiting-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}

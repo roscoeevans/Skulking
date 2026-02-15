@@ -1,0 +1,59 @@
+---
+description: Typography system — mobile-optimized, Apple-style type scale
+globs: **/*.{css,scss,tsx,jsx,html}
+alwaysApply: false
+---
+
+# Typography
+
+All type must feel like Apple marketing material — confident, clean, and effortlessly legible on glass.
+
+## Font Stack
+
+```css
+--font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+--font-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+--font-mono: 'SF Mono', ui-monospace, monospace;
+```
+
+Use `--font-display` for headings and hero text. Use `--font-body` for everything else.
+
+## Type Scale (Mobile)
+
+| Token | Size | Weight | Line Height | Use |
+|-------|------|--------|-------------|-----|
+| `--text-hero` | `34px` | 700 | 1.12 | Hero headlines, splash screens |
+| `--text-title-1` | `28px` | 700 | 1.18 | Page titles |
+| `--text-title-2` | `22px` | 700 | 1.22 | Section headers |
+| `--text-title-3` | `20px` | 600 | 1.25 | Card titles, sub-sections |
+| `--text-headline` | `17px` | 600 | 1.29 | List headers, emphasis |
+| `--text-body` | `17px` | 400 | 1.47 | Default body text |
+| `--text-callout` | `16px` | 400 | 1.38 | Supporting text, descriptions |
+| `--text-subhead` | `15px` | 400 | 1.33 | Secondary labels |
+| `--text-footnote` | `13px` | 400 | 1.38 | Captions, timestamps |
+| `--text-caption` | `12px` | 400 | 1.33 | Badges, fine print |
+
+## CSS Custom Properties
+
+```css
+:root {
+  --text-hero: 700 34px/1.12 var(--font-display);
+  --text-title-1: 700 28px/1.18 var(--font-display);
+  --text-title-2: 700 22px/1.22 var(--font-display);
+  --text-title-3: 600 20px/1.25 var(--font-display);
+  --text-headline: 600 17px/1.29 var(--font-body);
+  --text-body: 400 17px/1.47 var(--font-body);
+  --text-callout: 400 16px/1.38 var(--font-body);
+  --text-subhead: 400 15px/1.33 var(--font-body);
+  --text-footnote: 400 13px/1.38 var(--font-body);
+  --text-caption: 400 12px/1.33 var(--font-body);
+}
+```
+
+## Rules
+
+1. **No text smaller than 12px.** Ever.
+2. **Headings are bold or semibold.** Body is regular weight. Never use light/thin weights on glass — legibility suffers.
+3. **Letter-spacing on large titles**: apply `letter-spacing: -0.02em` to `--text-hero` and `--text-title-1` for that tight Apple feel.
+4. **Text on glass** must use `--color-gray-900` or `--color-white` — never mid-grays, which wash out on translucent surfaces.
+5. **One font size per element.** Don't mix sizes within a single text block.
