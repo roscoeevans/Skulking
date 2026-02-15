@@ -16,12 +16,14 @@
   text-align: center;
   padding: var(--space-40) 0 var(--space-24);
 }
+
 .page-header h1 {
   font: var(--text-hero);
   color: var(--color-white);
   letter-spacing: -0.02em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+
 .page-header .subtitle {
   font: var(--text-callout);
   color: rgba(255, 255, 255, 0.8);
@@ -67,6 +69,7 @@
   flex-direction: column;
   gap: var(--space-8);
 }
+
 .player-row {
   display: flex;
   align-items: center;
@@ -78,10 +81,12 @@
   font: var(--text-headline);
   animation: slideIn var(--dur-normal) var(--ease-decel);
 }
+
 .player-row .player-name {
   flex: 1;
   color: var(--color-white);
 }
+
 .player-row .admin-badge {
   font: var(--text-caption);
   color: var(--color-amber);
@@ -96,6 +101,7 @@
   flex-direction: column;
   gap: var(--space-4);
 }
+
 .score-row {
   display: flex;
   align-items: center;
@@ -105,29 +111,35 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   gap: var(--space-12);
 }
+
 .score-row.has-bonus {
   animation: goldGlow 2s ease infinite;
   border-color: rgba(199, 163, 50, 0.4);
 }
+
 .score-rank {
   font: var(--text-title-3);
   color: rgba(255, 255, 255, 0.6);
   min-width: 24px;
 }
+
 .score-name {
   flex: 1;
   font: var(--text-headline);
   color: var(--color-white);
 }
+
 .score-bonus-icon {
   font-size: 16px;
 }
+
 .score-points {
   font: var(--text-headline);
   color: rgba(255, 255, 255, 0.8);
   min-width: 48px;
   text-align: right;
 }
+
 .score-total {
   font: var(--text-title-3);
   color: var(--color-white);
@@ -141,6 +153,7 @@
   flex-direction: column;
   gap: var(--space-4);
 }
+
 .bid-row {
   display: flex;
   align-items: center;
@@ -149,11 +162,13 @@
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .bid-row .bid-name {
   flex: 1;
   font: var(--text-headline);
   color: var(--color-white);
 }
+
 .bid-row .bid-value {
   font: var(--text-title-2);
   color: var(--color-white);
@@ -166,24 +181,28 @@
   gap: var(--space-12);
   padding: var(--space-16);
 }
+
 .bonus-section-title {
   font: var(--text-headline);
-  color: var(--color-gray-900);
+  color: var(--color-white);
 }
+
 .bonus-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
 }
+
 .bonus-label {
   font: var(--text-callout);
-  color: var(--color-gray-800);
+  color: rgba(255, 255, 255, 0.9);
   flex: 1;
 }
+
 .bonus-value {
   font: var(--text-footnote);
-  color: var(--color-gray-600);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ── Waiting State ── */
@@ -191,6 +210,7 @@
   text-align: center;
   padding: var(--space-40) var(--space-20);
 }
+
 .waiting-text {
   font: var(--text-title-3);
   color: var(--color-white);
@@ -209,6 +229,7 @@
   flex-direction: column;
   gap: var(--space-8);
 }
+
 .form-label {
   font: var(--text-subhead);
   color: rgba(255, 255, 255, 0.7);
@@ -218,6 +239,7 @@
 .points-positive {
   color: #34D399;
 }
+
 .points-negative {
   color: var(--color-watermelon);
 }
@@ -226,4 +248,146 @@
 .crown {
   font-size: 24px;
   animation: pulse 1.5s ease infinite;
+}
+
+/* ── Config Screen ── */
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.config-hint {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+.rounds-picker {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-6);
+}
+
+.rounds-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-radius: var(--radius-md);
+  font: var(--text-headline);
+  color: rgba(255, 255, 255, 0.8);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rounds-pill.selected {
+  background: rgba(247, 130, 27, 0.25);
+  border-color: rgba(247, 130, 27, 0.6);
+  color: var(--color-white);
+  box-shadow: 0 0 12px rgba(247, 130, 27, 0.3);
+}
+
+.rounds-pill:active {
+  transform: scale(0.95);
+}
+
+/* ── Final Page ── */
+.final-page .content {
+  gap: var(--space-12);
+}
+
+/* ── Score Journey Chart ── */
+.chart-container {
+  padding: var(--space-12) var(--space-8);
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-label {
+  font-size: 10px;
+  fill: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-body);
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6) var(--space-12);
+  padding: var(--space-8) var(--space-4) 0;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font: var(--text-caption);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Awards Grid ── */
+.awards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+.award-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-12) var(--space-8);
+  gap: var(--space-2);
+}
+
+.award-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.award-title {
+  font: var(--text-caption);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.award-name {
+  font: var(--text-headline);
+  color: var(--color-white);
+}
+
+.award-stat {
+  font: var(--text-caption);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── Admin Controls ── */
+.admin-controls {
+  gap: var(--space-8);
+}
+
+.admin-controls .btn-destructive {
+  background: rgba(255, 59, 48, 0.15);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  color: var(--color-watermelon);
+}
+
+.admin-controls .btn-destructive:active {
+  background: rgba(255, 59, 48, 0.3);
 }

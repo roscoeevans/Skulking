@@ -30,6 +30,8 @@ interface GameContextValue {
   advanceToScoring: () => Promise<void>
   nextRound: () => Promise<void>
   resetGame: () => Promise<void>
+  restartSamePlayers: () => Promise<void>
+  configureAndStart: (totalRounds: number) => Promise<void>
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -257,6 +259,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY)
   }, [])
 
+  const restartSamePlayers = useCallback(async () => {
+    const { error } = await supabase.rpc('restart_same_players')
+    if (error) throw new Error(error.message)
+  }, [])
+
+  const configureAndStart = useCallback(async (totalRounds: number) => {
+    const { error } = await supabase.rpc('configure_and_start', {
+      p_total_rounds: totalRounds,
+    })
+    if (error) throw new Error(error.message)
+  }, [])
+
   return (
     <GameContext.Provider
       value={{
@@ -274,6 +288,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         advanceToScoring,
         nextRound,
         resetGame,
+        restartSamePlayers,
+        configureAndStart,
       }}
     >
       {children}
