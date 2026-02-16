@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useGame } from '../game/context'
 import { NumberPicker } from '../components/NumberPicker'
 import { BonusPicker } from '../components/BonusPicker'
+import { LootPicker } from '../components/LootPicker'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { EMPTY_BONUSES } from '../game/types'
 import type { Bonuses } from '../game/types'
@@ -11,6 +12,7 @@ export function Scoring() {
     useGame()
   const [tricks, setTricks] = useState<number | null>(null)
   const [bonuses, setBonuses] = useState<Bonuses>({ ...EMPTY_BONUSES })
+  const [lootPartners, setLootPartners] = useState<string[]>([])
   const [showConfirm, setShowConfirm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -45,7 +47,8 @@ export function Scoring() {
     setSubmitting(true)
     setError('')
     try {
-      await submitResult(tricks, bonuses)
+      const validLoot = lootPartners.filter((p) => p !== '')
+      await submitResult(tricks, bonuses, validLoot)
       setShowConfirm(false)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to submit')
@@ -103,6 +106,15 @@ export function Scoring() {
             disabled={myBid?.bid === 0}
           />
         </div>
+
+        <div style={{ marginTop: 'var(--space-16)' }}>
+          <LootPicker
+            players={players}
+            currentPlayerId={currentPlayer?.id ?? ''}
+            lootPartners={lootPartners}
+            onChange={setLootPartners}
+          />
+        </div>
       </div>
 
       <div className="actions">
@@ -123,7 +135,7 @@ export function Scoring() {
       {showConfirm && (
         <ConfirmModal
           title="Lock your score?"
-          message={`${tricks} trick${tricks === 1 ? '' : 's'} won. This cannot be changed.`}
+          message={`${tricks} trick${tricks === 1 ? '' : 's'} won${lootPartners.filter(p => p !== '').length > 0 ? ` · ${lootPartners.filter(p => p !== '').length} Loot alliance${lootPartners.filter(p => p !== '').length > 1 ? 's' : ''}` : ''}. This cannot be changed.`}
           confirmLabel="Lock Score"
           cancelLabel="Go Back"
           onConfirm={handleConfirm}

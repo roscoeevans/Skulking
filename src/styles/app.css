@@ -428,3 +428,101 @@
   touch-action: pan-y;
   user-select: none;
 }
+
+/* ── Loot Picker ── */
+.loot-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.loot-hint {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+.loot-count-picker {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.loot-count-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border-radius: var(--radius-md);
+  font: var(--text-headline);
+  color: rgba(255, 255, 255, 0.8);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.loot-count-pill.selected {
+  background: rgba(247, 178, 51, 0.25);
+  border-color: rgba(247, 178, 51, 0.6);
+  color: var(--color-white);
+  box-shadow: 0 0 12px rgba(247, 178, 51, 0.3);
+}
+
+.loot-count-pill:active {
+  transform: scale(0.95);
+}
+
+.loot-partners {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: var(--space-8);
+}
+
+.loot-partner-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.loot-select {
+  display: block;
+  width: 100%;
+  padding: var(--space-10) var(--space-12);
+  font: var(--text-body);
+  color: var(--color-white);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(var(--glass-blur));
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.loot-select option {
+  background: #1a1a2e;
+  color: var(--color-white);
+}
+
+.loot-partner-hint {
+  font: var(--text-caption2);
+  color: rgba(247, 178, 51, 0.7);
+  font-style: italic;
+}
+
+/* ── Loot Chip (Leaderboard) ── */
+.loot-chip {
+  font: var(--text-caption2);
+  font-weight: 600;
+  color: rgba(247, 178, 51, 1);
+  background: rgba(247, 178, 51, 0.15);
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}

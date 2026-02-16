@@ -17,6 +17,7 @@ export function Leaderboard() {
           roundPoints: score?.round_points ?? 0,
           totalPoints: score?.total_points ?? 0,
           hasBonus: score?.has_bonus ?? false,
+          lootBonus: score?.loot_bonus ?? 0,
         }
       })
       .sort((a, b) => b.totalPoints - a.totalPoints)
@@ -34,7 +35,7 @@ export function Leaderboard() {
 
       <div className="content">
         <div className="scoreboard">
-          {ranked.map(({ player, roundPoints, totalPoints, hasBonus }, i) => (
+          {ranked.map(({ player, roundPoints, totalPoints, hasBonus, lootBonus }, i) => (
             <div
               key={player.id}
               className={`score-row${hasBonus ? ' has-bonus' : ''}`}
@@ -49,6 +50,9 @@ export function Leaderboard() {
                 {roundPoints >= 0 ? '+' : ''}
                 {roundPoints}
               </span>
+              {lootBonus > 0 && (
+                <span className="loot-chip">🪙+{lootBonus}</span>
+              )}
               <span className="score-total">{totalPoints}</span>
             </div>
           ))}
