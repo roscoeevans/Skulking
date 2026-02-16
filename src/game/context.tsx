@@ -32,6 +32,7 @@ interface GameContextValue {
   resetGame: () => Promise<void>
   restartSamePlayers: () => Promise<void>
   configureAndStart: (totalRounds: number) => Promise<void>
+  removePlayer: (playerId: string) => Promise<void>
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -271,6 +272,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message)
   }, [])
 
+  const removePlayer = useCallback(async (playerId: string) => {
+    const { error } = await supabase.rpc('remove_player', {
+      p_player_id: playerId,
+    })
+    if (error) throw new Error(error.message)
+  }, [])
+
   return (
     <GameContext.Provider
       value={{
@@ -290,6 +298,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         resetGame,
         restartSamePlayers,
         configureAndStart,
+        removePlayer,
       }}
     >
       {children}

@@ -1,13 +1,17 @@
 import { useState } from 'react'
 import { useGame } from '../game/context'
+import { SwipeableRow } from '../components/SwipeableRow'
+import { ConfirmModal } from '../components/ConfirmModal'
 
 export function Lobby() {
-  const { players, currentPlayer, joinGame, startGame } = useGame()
+  const { players, currentPlayer, joinGame, startGame, removePlayer } = useGame()
   const [name, setName] = useState('')
   const [isRocky, setIsRocky] = useState(false)
   const [isSam, setIsSam] = useState(false)
   const [joining, setJoining] = useState(false)
   const [error, setError] = useState('')
+  const [pendingRemove, setPendingRemove] = useState<{ id: string; name: string } | null>(null)
+  const [removing, setRemoving] = useState(false)
 
   const isAdmin = isRocky || isSam
   const effectiveName = isRocky ? 'Rocky' : isSam ? 'Sam' : name.trim()
@@ -36,6 +40,19 @@ export function Lobby() {
     }
   }
 
+  async function handleRemovePlayer() {
+    if (!pendingRemove || removing) return
+    setRemoving(true)
+    try {
+      await removePlayer(pendingRemove.id)
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to remove')
+    } finally {
+      setPendingRemove(null)
+      setRemoving(false)
+    }
+  }
+
   // Already joined — show lobby waiting view
   if (currentPlayer) {
     return (
@@ -50,15 +67,32 @@ export function Lobby() {
             Players ({players.length})
           </div>
           <div className="player-list">
-            {players.map((p) => (
-              <div key={p.id} className="player-row">
-                <span className="player-name">
-                  {p.name}
-                  {p.id === currentPlayer.id ? ' (you)' : ''}
-                </span>
-                {p.is_admin && <span className="admin-badge">Admin</span>}
-              </div>
-            ))}
+            {players.map((p) => {
+              const isSelf = p.id === currentPlayer.id
+              const row = (
+                <div className="player-row">
+                  <span className="player-name">
+                    {p.name}
+                    {isSelf ? ' (you)' : ''}
+                  </span>
+                  {p.is_admin && <span className="admin-badge">Admin</span>}
+                </div>
+              )
+
+              // Admin can swipe-to-remove other players
+              if (currentPlayer.is_admin && !isSelf) {
+                return (
+                  <SwipeableRow
+                    key={p.id}
+                    onDelete={() => setPendingRemove({ id: p.id, name: p.name })}
+                  >
+                    {row}
+                  </SwipeableRow>
+                )
+              }
+
+              return <div key={p.id}>{row}</div>
+            })}
           </div>
         </div>
 
@@ -92,6 +126,17 @@ export function Lobby() {
               </p>
             </div>
           </div>
+        )}
+
+        {pendingRemove && (
+          <ConfirmModal
+            title="Remove Player"
+            message={`Remove ${pendingRemove.name} from the game?`}
+            confirmLabel={removing ? 'Removing...' : 'Remove'}
+            cancelLabel="Cancel"
+            onConfirm={handleRemovePlayer}
+            onCancel={() => setPendingRemove(null)}
+          />
         )}
       </div>
     )
