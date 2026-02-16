@@ -391,3 +391,40 @@
 .admin-controls .btn-destructive:active {
   background: rgba(255, 59, 48, 0.3);
 }
+
+/* ── Swipeable Row ── */
+.swipeable-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.swipeable-delete-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-watermelon);
+}
+
+.swipeable-delete-btn {
+  font: var(--text-caption1);
+  font-weight: 600;
+  color: var(--color-white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-8) var(--space-12);
+}
+
+.swipeable-content {
+  position: relative;
+  z-index: 1;
+  background: var(--glass-bg);
+  touch-action: pan-y;
+  user-select: none;
+}

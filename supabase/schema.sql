@@ -70,13 +70,14 @@ ALTER PUBLICATION supabase_realtime ADD TABLE scores;
 -- 4. RPC FUNCTIONS
 -- ============================================================
 
--- Join the game (validates lobby phase + player limit)
+-- Join the game (validates lobby phase + player limit + single admin)
 CREATE OR REPLACE FUNCTION join_game(p_name text, p_is_admin boolean DEFAULT false)
 RETURNS uuid
 LANGUAGE plpgsql AS $$
 DECLARE
   v_player_id uuid;
   v_phase text;
+  v_admin_exists boolean;
 BEGIN
   SELECT phase INTO v_phase FROM game WHERE id = 1;
   IF v_phase != 'lobby' THEN
@@ -84,6 +85,13 @@ BEGIN
   END IF;
   IF (SELECT count(*) FROM players) >= 10 THEN
     RAISE EXCEPTION 'Maximum 10 players reached';
+  END IF;
+  -- Enforce single admin
+  IF p_is_admin THEN
+    SELECT EXISTS(SELECT 1 FROM players WHERE is_admin = true) INTO v_admin_exists;
+    IF v_admin_exists THEN
+      RAISE EXCEPTION 'An admin player already exists';
+    END IF;
   END IF;
   INSERT INTO players (name, is_admin)
     VALUES (p_name, p_is_admin)
@@ -252,5 +260,20 @@ BEGIN
     RETURN true;
   END IF;
   RETURN false;
+END;
+$$;
+
+-- Admin: remove a player from the lobby
+CREATE OR REPLACE FUNCTION remove_player(p_player_id uuid)
+RETURNS void
+LANGUAGE plpgsql AS $$
+DECLARE
+  v_phase text;
+BEGIN
+  SELECT phase INTO v_phase FROM game WHERE id = 1;
+  IF v_phase <> 'lobby' THEN
+    RAISE EXCEPTION 'Players can only be removed during the lobby phase';
+  END IF;
+  DELETE FROM players WHERE id = p_player_id;
 END;
 $$;
