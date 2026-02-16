@@ -75,7 +75,7 @@ export function SwipeableRow({ children, onDelete, disabled }: SwipeableRowProps
     }
 
     return (
-        <div className="swipeable-container">
+        <div className={`swipeable-container${offset > 0 || showDelete ? ' swiping' : ''}`}>
             <div className="swipeable-delete-bg">
                 <button
                     className="swipeable-delete-btn"

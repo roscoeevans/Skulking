@@ -75,7 +75,7 @@
   align-items: center;
   gap: var(--space-12);
   padding: var(--space-12) var(--space-16);
-  background: rgba(60, 58, 75, 0.95);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   font: var(--text-headline);
@@ -409,7 +409,12 @@
   align-items: center;
   justify-content: center;
   background: var(--color-watermelon);
-  border-radius: 0 16px 16px 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.swipeable-container.swiping .swipeable-delete-bg {
+  opacity: 1;
 }
 
 .swipeable-delete-btn {
