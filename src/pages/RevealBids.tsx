@@ -17,6 +17,19 @@ export function RevealBids() {
     [players, bids, round]
   )
 
+  const totalBids = useMemo(
+    () => roundBids.reduce((sum, { bid }) => sum + bid, 0),
+    [roundBids]
+  )
+
+  const diff = totalBids - round
+  const discrepancyLabel =
+    diff === 0
+      ? '✅ Perfectly balanced'
+      : diff > 0
+        ? `Over by ${diff}`
+        : `Under by ${Math.abs(diff)}`
+
   // Current leaderboard (from previous rounds)
   const leaderboard = useMemo(() => {
     if (round <= 1) return []
@@ -41,9 +54,22 @@ export function RevealBids() {
       </div>
 
       <div className="content">
+        {/* Bid Summary */}
+        <div className="bid-summary">
+          <span className="bid-summary-total">
+            Total bids: {totalBids} / {round} hands
+          </span>
+          <span className={`bid-discrepancy ${diff === 0 ? 'balanced' : diff > 0 ? 'over' : 'under'}`}>
+            {discrepancyLabel}
+          </span>
+        </div>
+
         <div className="bid-table">
           {roundBids.map(({ player, bid }) => (
-            <div key={player.id} className="bid-row">
+            <div
+              key={player.id}
+              className={`bid-row${player.id === currentPlayer?.id ? ' bid-row-self' : ''}`}
+            >
               <span className="bid-name">{player.name}</span>
               <span className="bid-value">{bid}</span>
             </div>
