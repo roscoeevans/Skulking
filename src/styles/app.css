@@ -75,7 +75,7 @@
   align-items: center;
   gap: var(--space-12);
   padding: var(--space-12) var(--space-16);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(60, 58, 75, 0.95);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   font: var(--text-headline);
@@ -396,7 +396,7 @@
 .swipeable-container {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: 16px;
 }
 
 .swipeable-delete-bg {
@@ -409,6 +409,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-watermelon);
+  border-radius: 0 16px 16px 0;
 }
 
 .swipeable-delete-btn {
@@ -424,10 +425,11 @@
 .swipeable-content {
   position: relative;
   z-index: 1;
-  background: var(--glass-bg);
   touch-action: pan-y;
   user-select: none;
 }
+
+
 
 /* ── Loot Picker ── */
 .loot-section {
