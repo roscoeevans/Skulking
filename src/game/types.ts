@@ -56,6 +56,14 @@ export interface Score {
   loot_bonus: number
 }
 
+export interface LootAlliance {
+  id: number
+  initiator_id: string
+  partner_id: string
+  round_number: number
+  status: 'pending' | 'accepted'
+}
+
 export const EMPTY_BONUSES: Bonuses = {
   black14: false,
   color14s: 0,

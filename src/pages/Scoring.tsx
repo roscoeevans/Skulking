@@ -3,6 +3,7 @@ import { useGame } from '../game/context'
 import { NumberPicker } from '../components/NumberPicker'
 import { BonusPicker } from '../components/BonusPicker'
 import { LootPicker } from '../components/LootPicker'
+import { LootBanner } from '../components/LootBanner'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { EMPTY_BONUSES } from '../game/types'
 import type { Bonuses } from '../game/types'
@@ -69,6 +70,7 @@ export function Scoring() {
           </p>
         </div>
         <div className="content" style={{ justifyContent: 'center' }}>
+          <LootBanner />
           <div className="waiting">
             <p className="waiting-text">
               Waiting for others<span className="waiting-dots" />

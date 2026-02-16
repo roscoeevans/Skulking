@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useGame } from '../game/context'
+import { LootBanner } from '../components/LootBanner'
 
 export function Leaderboard() {
   const { game, players, scores, currentPlayer, nextRound } = useGame()
@@ -34,6 +35,7 @@ export function Leaderboard() {
       </div>
 
       <div className="content">
+        <LootBanner />
         <div className="scoreboard">
           {ranked.map(({ player, roundPoints, totalPoints, hasBonus, lootBonus }, i) => (
             <div

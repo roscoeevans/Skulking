@@ -30,9 +30,9 @@ export function LootPicker({
 
     return (
         <div className="card loot-section">
-            <div className="bonus-section-title">Loot Alliances</div>
+            <div className="bonus-section-title">Loot Cards</div>
             <p className="loot-hint">
-                Were you in a Loot alliance this round?
+                Did you play a Loot card this round?
             </p>
 
             <div className="loot-count-picker">

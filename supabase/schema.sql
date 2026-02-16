@@ -52,12 +52,13 @@ CREATE TABLE scores (
   PRIMARY KEY (player_id, round_number)
 );
 
--- Loot alliance claims
+-- Loot alliance claims (initiator/acceptor model)
 CREATE TABLE loot_claims (
   id serial PRIMARY KEY,
-  player_id uuid REFERENCES players(id) ON DELETE CASCADE,
+  initiator_id uuid REFERENCES players(id) ON DELETE CASCADE,
+  partner_id uuid REFERENCES players(id) ON DELETE CASCADE,
   round_number integer NOT NULL,
-  partner_id uuid REFERENCES players(id) ON DELETE CASCADE
+  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted'))
 );
 
 -- 2. DISABLE RLS (private family app)
@@ -147,7 +148,6 @@ DECLARE
   v_prev_total integer;
   v_bonus_earned boolean;
   v_loot_bonus integer;
-  v_their_claims integer;
   v_partner_hit boolean;
   rec RECORD;
   loot_rec RECORD;
@@ -157,11 +157,11 @@ BEGIN
     VALUES (p_player_id, p_round, p_tricks, p_bonuses)
     ON CONFLICT (player_id, round_number) DO NOTHING;
 
-  -- Insert loot claims (max 2)
+  -- Insert loot claims as INITIATOR (max 2)
   FOR i IN 1..LEAST(COALESCE(array_length(p_loot_partners, 1), 0), 2) LOOP
     IF p_loot_partners[i] IS NOT NULL THEN
-      INSERT INTO loot_claims (player_id, round_number, partner_id)
-        VALUES (p_player_id, p_round, p_loot_partners[i]);
+      INSERT INTO loot_claims (initiator_id, partner_id, round_number, status)
+        VALUES (p_player_id, p_loot_partners[i], p_round, 'pending');
     END IF;
   END LOOP;
 
@@ -190,27 +190,40 @@ BEGIN
         v_bonus_earned := v_bonus_total > 0;
       END IF;
 
-      -- Loot alliance bonus: mutual claims + both hit bid
+      -- Loot bonus: this player is INITIATOR in accepted alliances
       IF rec.tricks_won = rec.bid THEN
         FOR loot_rec IN
-          SELECT partner_id, count(*) as claim_count
-          FROM loot_claims
-          WHERE player_id = rec.player_id AND round_number = p_round
-          GROUP BY partner_id
+          SELECT lc.id, lc.partner_id
+          FROM loot_claims lc
+          WHERE lc.initiator_id = rec.player_id
+            AND lc.round_number = p_round
+            AND lc.status = 'accepted'
         LOOP
-          SELECT count(*) INTO v_their_claims
-          FROM loot_claims
-          WHERE player_id = loot_rec.partner_id
-            AND round_number = p_round
-            AND partner_id = rec.player_id;
-
           SELECT r2.tricks_won = b2.bid INTO v_partner_hit
           FROM results r2
           JOIN bids b2 ON b2.player_id = r2.player_id AND b2.round_number = r2.round_number
           WHERE r2.player_id = loot_rec.partner_id AND r2.round_number = p_round;
 
-          IF v_their_claims > 0 AND v_partner_hit IS TRUE THEN
-            v_loot_bonus := v_loot_bonus + LEAST(loot_rec.claim_count, v_their_claims) * 20;
+          IF v_partner_hit IS TRUE THEN
+            v_loot_bonus := v_loot_bonus + 20;
+          END IF;
+        END LOOP;
+
+        -- Also: this player is PARTNER in accepted alliances
+        FOR loot_rec IN
+          SELECT lc.id, lc.initiator_id
+          FROM loot_claims lc
+          WHERE lc.partner_id = rec.player_id
+            AND lc.round_number = p_round
+            AND lc.status = 'accepted'
+        LOOP
+          SELECT r2.tricks_won = b2.bid INTO v_partner_hit
+          FROM results r2
+          JOIN bids b2 ON b2.player_id = r2.player_id AND b2.round_number = r2.round_number
+          WHERE r2.player_id = loot_rec.initiator_id AND r2.round_number = p_round;
+
+          IF v_partner_hit IS TRUE THEN
+            v_loot_bonus := v_loot_bonus + 20;
           END IF;
         END LOOP;
       END IF;
@@ -245,6 +258,16 @@ BEGIN
 
     UPDATE game SET phase = 'leaderboard' WHERE id = 1;
   END IF;
+END;
+$$;
+
+-- Accept a pending loot alliance (called by partner)
+CREATE OR REPLACE FUNCTION accept_loot_alliance(p_alliance_id integer)
+RETURNS void
+LANGUAGE plpgsql AS $$
+BEGIN
+  UPDATE loot_claims SET status = 'accepted'
+    WHERE id = p_alliance_id AND status = 'pending';
 END;
 $$;
 

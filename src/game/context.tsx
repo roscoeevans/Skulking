@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { supabase } from '../lib/supabase'
-import type { Game, Player, Bid, Result, Score, Bonuses } from './types'
+import type { Game, Player, Bid, Result, Score, Bonuses, LootAlliance } from './types'
 import { STORAGE_KEY } from './types'
 
 /* ============================================================
@@ -20,6 +20,7 @@ interface GameContextValue {
   bids: Bid[]
   results: Result[]
   scores: Score[]
+  lootAlliances: LootAlliance[]
   currentPlayer: Player | null
   loading: boolean
   // Actions
@@ -33,6 +34,7 @@ interface GameContextValue {
   restartSamePlayers: () => Promise<void>
   configureAndStart: (totalRounds: number) => Promise<void>
   removePlayer: (playerId: string) => Promise<void>
+  acceptLootAlliance: (allianceId: number) => Promise<void>
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -49,23 +51,26 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [bids, setBids] = useState<Bid[]>([])
   const [results, setResults] = useState<Result[]>([])
   const [scores, setScores] = useState<Score[]>([])
+  const [lootAlliances, setLootAlliances] = useState<LootAlliance[]>([])
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
   const [loading, setLoading] = useState(true)
 
   // ── Fetch all state ──
   const fetchAll = useCallback(async () => {
-    const [gRes, pRes, bRes, rRes, sRes] = await Promise.all([
+    const [gRes, pRes, bRes, rRes, sRes, lRes] = await Promise.all([
       supabase.from('game').select('*').eq('id', 1).single(),
       supabase.from('players').select('*').order('joined_at'),
       supabase.from('bids').select('*'),
       supabase.from('results').select('*'),
       supabase.from('scores').select('*'),
+      supabase.from('loot_claims').select('*'),
     ])
     if (gRes.data) setGame(gRes.data as Game)
     if (pRes.data) setPlayers(pRes.data as Player[])
     if (bRes.data) setBids(bRes.data as Bid[])
     if (rRes.data) setResults(rRes.data as Result[])
     if (sRes.data) setScores(sRes.data as Score[])
+    if (lRes.data) setLootAlliances(lRes.data as LootAlliance[])
     return { game: gRes.data as Game | null, players: pRes.data as Player[] | null }
   }, [])
 
@@ -183,6 +188,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
             })
         }
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'loot_claims' },
+        () => {
+          supabase
+            .from('loot_claims')
+            .select('*')
+            .then(({ data }) => {
+              if (data) setLootAlliances(data as LootAlliance[])
+            })
+        }
+      )
       .subscribe()
 
     return () => {
@@ -280,6 +297,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message)
   }, [])
 
+  const acceptLootAlliance = useCallback(async (allianceId: number) => {
+    const { error } = await supabase.rpc('accept_loot_alliance', {
+      p_alliance_id: allianceId,
+    })
+    if (error) throw new Error(error.message)
+  }, [])
+
   return (
     <GameContext.Provider
       value={{
@@ -288,6 +312,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         bids,
         results,
         scores,
+        lootAlliances,
         currentPlayer,
         loading,
         joinGame,
@@ -300,6 +325,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         restartSamePlayers,
         configureAndStart,
         removePlayer,
+        acceptLootAlliance,
       }}
     >
       {children}

@@ -572,3 +572,68 @@
   background: rgba(247, 178, 51, 0.1);
   border-left: 3px solid var(--color-amber);
 }
+
+/* ── Loot Banner ── */
+.loot-banner-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+  width: 100%;
+}
+
+.loot-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: rgba(247, 178, 51, 0.12);
+  border: 1px solid rgba(247, 178, 51, 0.35);
+  border-radius: var(--radius-md);
+  animation: lootSlideIn 0.3s ease-out;
+}
+
+@keyframes lootSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loot-banner-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font: var(--text-subheadline);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+}
+
+.loot-banner-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.loot-banner-accept {
+  flex-shrink: 0;
+  font: var(--text-subheadline);
+  font-weight: 600;
+  color: var(--color-white);
+  background: rgba(247, 178, 51, 0.35);
+  border: 1px solid rgba(247, 178, 51, 0.5);
+  border-radius: var(--radius-sm);
+  padding: var(--space-6) var(--space-16);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.loot-banner-accept:active {
+  transform: scale(0.95);
+  background: rgba(247, 178, 51, 0.5);
+}
