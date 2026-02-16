@@ -14,9 +14,6 @@ export function Lobby() {
   const effectiveName = isRocky ? 'Rocky' : isSam ? 'Sam' : name.trim()
   const canJoin = effectiveName.length > 0 && !joining
 
-  // Check if an admin already exists in the game
-  const adminExists = players.some((p) => p.is_admin)
-
   async function handleJoin() {
     if (!canJoin) return
     setJoining(true)
@@ -151,32 +148,30 @@ export function Lobby() {
             />
           </div>
 
-          {!adminExists && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={isRocky}
-                  onChange={(e) => {
-                    setIsRocky(e.target.checked)
-                    if (e.target.checked) setIsSam(false)
-                  }}
-                />
-                <span>I am Rocky</span>
-              </label>
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={isSam}
-                  onChange={(e) => {
-                    setIsSam(e.target.checked)
-                    if (e.target.checked) setIsRocky(false)
-                  }}
-                />
-                <span>I am Sam</span>
-              </label>
-            </div>
-          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+            <label className="checkbox-row">
+              <input
+                type="checkbox"
+                checked={isRocky}
+                onChange={(e) => {
+                  setIsRocky(e.target.checked)
+                  if (e.target.checked) setIsSam(false)
+                }}
+              />
+              <span>I am Rocky</span>
+            </label>
+            <label className="checkbox-row">
+              <input
+                type="checkbox"
+                checked={isSam}
+                onChange={(e) => {
+                  setIsSam(e.target.checked)
+                  if (e.target.checked) setIsRocky(false)
+                }}
+              />
+              <span>I am Sam</span>
+            </label>
+          </div>
         </div>
 
         {players.length > 0 && (
