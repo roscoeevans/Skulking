@@ -25,7 +25,7 @@ interface GameContextValue {
   // Actions
   joinGame: (name: string, isAdmin: boolean) => Promise<void>
   submitBid: (bid: number) => Promise<void>
-  submitResult: (tricks: number, bonuses: Bonuses) => Promise<void>
+  submitResult: (tricks: number, bonuses: Bonuses, lootPartners: string[]) => Promise<void>
   startGame: () => Promise<void>
   advanceToScoring: () => Promise<void>
   nextRound: () => Promise<void>
@@ -225,13 +225,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
   )
 
   const submitResult = useCallback(
-    async (tricks: number, bonuses: Bonuses) => {
+    async (tricks: number, bonuses: Bonuses, lootPartners: string[]) => {
       if (!currentPlayer || !game) return
       const { error } = await supabase.rpc('submit_result', {
         p_player_id: currentPlayer.id,
         p_round: game.round_number,
         p_tricks: tricks,
         p_bonuses: bonuses,
+        p_loot_partners: lootPartners,
       })
       if (error) throw new Error(error.message)
     },

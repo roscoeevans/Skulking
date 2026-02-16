@@ -53,6 +53,7 @@ export interface Score {
   round_points: number
   total_points: number
   has_bonus: boolean
+  loot_bonus: number
 }
 
 export const EMPTY_BONUSES: Bonuses = {
