@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useGame } from '../game/context'
 import { SwipeableRow } from '../components/SwipeableRow'
-import { ConfirmModal } from '../components/ConfirmModal'
 
 export function Lobby() {
   const { players, currentPlayer, joinGame, startGame, removePlayer } = useGame()
@@ -10,8 +9,6 @@ export function Lobby() {
   const [isSam, setIsSam] = useState(false)
   const [joining, setJoining] = useState(false)
   const [error, setError] = useState('')
-  const [pendingRemove, setPendingRemove] = useState<{ id: string; name: string } | null>(null)
-  const [removing, setRemoving] = useState(false)
 
   const isAdmin = isRocky || isSam
   const effectiveName = isRocky ? 'Rocky' : isSam ? 'Sam' : name.trim()
@@ -40,16 +37,11 @@ export function Lobby() {
     }
   }
 
-  async function handleRemovePlayer() {
-    if (!pendingRemove || removing) return
-    setRemoving(true)
+  async function handleRemovePlayer(playerId: string) {
     try {
-      await removePlayer(pendingRemove.id)
+      await removePlayer(playerId)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to remove')
-    } finally {
-      setPendingRemove(null)
-      setRemoving(false)
     }
   }
 
@@ -84,7 +76,7 @@ export function Lobby() {
                 return (
                   <SwipeableRow
                     key={p.id}
-                    onDelete={() => setPendingRemove({ id: p.id, name: p.name })}
+                    onDelete={() => handleRemovePlayer(p.id)}
                   >
                     {row}
                   </SwipeableRow>
@@ -126,17 +118,6 @@ export function Lobby() {
               </p>
             </div>
           </div>
-        )}
-
-        {pendingRemove && (
-          <ConfirmModal
-            title="Remove Player"
-            message={`Remove ${pendingRemove.name} from the game?`}
-            confirmLabel={removing ? 'Removing...' : 'Remove'}
-            cancelLabel="Cancel"
-            onConfirm={handleRemovePlayer}
-            onCancel={() => setPendingRemove(null)}
-          />
         )}
       </div>
     )
