@@ -20,7 +20,7 @@ import { useNightActivities } from '../../midnight/useNightActivities'
 // Time before role action submit button unlocks (ms)
 const ROLE_ACTION_LOCK_MS = 1500
 // Toast duration for non-reveal actions (ms)
-const TOAST_DURATION_MS = 2000
+const TOAST_DURATION_MS = 8000
 
 type NightView = 'activity' | 'role-action' | 'toast'
 

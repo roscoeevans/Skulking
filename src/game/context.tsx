@@ -36,6 +36,7 @@ interface GameContextValue {
   removePlayer: (playerId: string) => Promise<void>
   acceptLootAlliance: (allianceId: number) => Promise<void>
   selectGame: (gameType: GameType) => Promise<void>
+  rejoinAs: (playerId: string) => void
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -332,6 +333,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message)
   }, [])
 
+  // ── Rejoin: reclaim your seat without creating a new player ──
+  const rejoinAs = useCallback((playerId: string) => {
+    const found = players.find((p) => p.id === playerId)
+    if (!found) throw new Error('Player not found')
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ playerId }))
+    setCurrentPlayer(found)
+  }, [players])
+
   return (
     <GameContext.Provider
       value={{
@@ -355,6 +364,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         removePlayer,
         acceptLootAlliance,
         selectGame,
+        rejoinAs,
       }}
     >
       {children}
