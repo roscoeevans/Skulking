@@ -1326,3 +1326,379 @@
   min-width: 48px;
   flex-shrink: 0;
 }
+
+/* ═══════════════════════════════════════════════
+   Night Activity Layer
+   ═══════════════════════════════════════════════ */
+
+/* ── Surface Container ── */
+.night-surface-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.night-surface {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+/* ── Crossfade Transitions ── */
+.fading-in {
+  animation: nightFadeIn 0.35s ease-out;
+}
+
+.fading-out {
+  animation: nightFadeOut 0.2s ease-in forwards;
+}
+
+@keyframes nightFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes nightFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+}
+
+/* ── Activity Card ── */
+.night-activity-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-20);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.night-activity-type {
+  font: var(--text-caption);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.night-activity-question {
+  font: var(--text-headline);
+  color: var(--color-white);
+  line-height: 1.4;
+}
+
+.night-activity-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.night-activity-option {
+  padding: var(--space-12) var(--space-16);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: var(--color-white);
+  font: var(--text-subhead);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.night-activity-option:not(:disabled):active {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.night-activity-option:disabled {
+  cursor: default;
+}
+
+.night-activity-option.correct {
+  background: rgba(52, 199, 89, 0.25);
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+
+.night-activity-option.dimmed {
+  opacity: 0.4;
+}
+
+/* ── Progress Bar ── */
+.night-activity-progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.night-activity-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.1s linear, background-color 0.3s ease;
+}
+
+/* ── Footer ── */
+.night-activity-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.night-activity-fun-label {
+  font: var(--text-caption);
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.night-activity-score {
+  font: var(--text-caption);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Role Reminder (inline, subtle) ── */
+.night-role-reminder {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+/* ── Role Action Surface ── */
+.night-role-surface {
+  padding: var(--space-16);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.night-role-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.night-role-emoji {
+  font-size: 28px;
+}
+
+.night-role-name {
+  font: var(--text-title-3);
+  color: var(--color-white);
+}
+
+.night-role-instruction {
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  margin-bottom: var(--space-12);
+}
+
+.night-role-allies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-12);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 10px;
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--space-12);
+}
+
+.night-ally-name {
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.night-role-error {
+  color: var(--color-destructive);
+  font: var(--text-footnote);
+  text-align: center;
+  margin-top: var(--space-8);
+}
+
+.night-role-submit {
+  margin-top: var(--space-12);
+  width: 100%;
+}
+
+/* ── Toast Surface ── */
+.night-toast-surface {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.night-toast-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+  text-align: center;
+}
+
+.night-toast-check {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--color-green);
+  background: rgba(52, 199, 89, 0.15);
+  border: 2px solid rgba(52, 199, 89, 0.4);
+  border-radius: 50%;
+  animation: toastPop 0.4s var(--ease-decel);
+}
+
+@keyframes toastPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.night-toast-text {
+  font: var(--text-headline);
+  color: var(--color-white);
+}
+
+.night-toast-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.night-toast-emoji {
+  font-size: 32px;
+}
+
+.night-toast-emoji-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+/* ── Night Activities Button (Results page) ── */
+.night-activities-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Night Activity Results Page ── */
+.night-results-stats {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.night-results-stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-16);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+}
+
+.night-results-stat-value {
+  font: var(--text-large-title);
+  color: var(--color-white);
+  font-variant-numeric: tabular-nums;
+}
+
+.night-results-stat-label {
+  font: var(--text-caption);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.night-results-lifetime {
+  text-align: center;
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.5);
+  padding: var(--space-8) 0;
+}
+
+.night-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.night-results-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--space-12);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.night-results-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-8);
+  font: var(--text-subhead);
+  color: var(--color-white);
+}
+
+.night-results-item-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.night-results-correct {
+  color: var(--color-green);
+}

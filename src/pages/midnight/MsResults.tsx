@@ -1,13 +1,19 @@
+import { useState } from 'react'
 import { useMidnight } from '../../midnight/MidnightContext'
 import { useGame } from '../../game/context'
 import { supabase } from '../../lib/supabase'
 import { ROLES } from '../../midnight/roles'
 import { RoleCard } from '../../components/midnight/RoleCard'
+import { MsNightActivityResults } from './MsNightActivityResults'
+import { NIGHT_ACTIVITY_SESSION_KEY } from './MsNight'
+import type { ActivityResult, LifetimeStats } from '../../midnight/useNightActivities'
 
 export function MsResults() {
     const { currentPlayer, players } = useGame()
     const { msState, rematch } = useMidnight()
     const isAdmin = currentPlayer?.is_admin ?? false
+
+    const [showActivities, setShowActivities] = useState(false)
 
     const winner = msState?.winner ?? ''
     const deaths = msState?.deaths ?? []
@@ -25,6 +31,13 @@ export function MsResults() {
         winner === 'village' ? 'var(--color-sky)' :
             winner === 'werewolf' ? 'var(--color-destructive)' :
                 winner === 'tanner' ? 'var(--color-gold)' : 'white'
+
+    // Read activity results from sessionStorage
+    let activityData: { results: ActivityResult[]; score: number; lifetimeStats: LifetimeStats } | null = null
+    try {
+        const raw = sessionStorage.getItem(NIGHT_ACTIVITY_SESSION_KEY)
+        if (raw) activityData = JSON.parse(raw)
+    } catch { /* ignore */ }
 
     async function handleRematch() {
         try {
@@ -48,6 +61,18 @@ export function MsResults() {
     Object.values(votes).forEach((targetId) => {
         voteCounts[targetId] = (voteCounts[targetId] ?? 0) + 1
     })
+
+    // ── Night Activity Results page ──
+    if (showActivities && activityData) {
+        return (
+            <MsNightActivityResults
+                results={activityData.results}
+                score={activityData.score}
+                lifetimeStats={activityData.lifetimeStats}
+                onClose={() => setShowActivities(false)}
+            />
+        )
+    }
 
     return (
         <div className="page">
@@ -140,6 +165,16 @@ export function MsResults() {
                         </div>
                     </div>
                 )}
+
+                {/* Night Activities Button */}
+                {activityData && activityData.results.length > 0 && (
+                    <button
+                        className="btn-secondary night-activities-btn"
+                        onClick={() => setShowActivities(true)}
+                    >
+                        🎯 View Night Activities
+                    </button>
+                )}
             </div>
 
             {isAdmin && (
@@ -155,3 +190,4 @@ export function MsResults() {
         </div>
     )
 }
+
