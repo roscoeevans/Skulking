@@ -47,7 +47,7 @@ export function Lobby() {
     return (
       <div className="page">
         <div className="page-header">
-          <h1>Skulking</h1>
+          <h1>Game Night</h1>
           <p className="subtitle">Waiting for players</p>
         </div>
 
@@ -97,7 +97,7 @@ export function Lobby() {
               disabled={players.length < 2}
               onClick={handleStart}
             >
-              Start Game
+              Choose Game
             </button>
             {players.length < 2 && (
               <p style={{ font: 'var(--text-footnote)', color: 'rgba(255,255,255,0.6)', textAlign: 'center' }}>
@@ -124,7 +124,7 @@ export function Lobby() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Skulking</h1>
+        <h1>Game Night</h1>
         <p className="subtitle">Enter the game</p>
       </div>
 

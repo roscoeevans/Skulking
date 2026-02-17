@@ -4,16 +4,26 @@
 
 export type Phase =
   | 'lobby'
+  | 'game_select'
   | 'config'
   | 'bidding'
   | 'reveal_bids'
   | 'scoring'
   | 'leaderboard'
   | 'finished'
+  | 'ms_setup'
+  | 'ms_deal'
+  | 'ms_night'
+  | 'ms_discussion'
+  | 'ms_voting'
+  | 'ms_results'
+
+export type GameType = 'skulking' | 'midnight_society'
 
 export interface Game {
   id: number
   phase: Phase
+  game_type: GameType
   round_number: number
   total_rounds: number
   created_at: string

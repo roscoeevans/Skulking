@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 import { useGame } from '../game/context'
+import { getGameDefinition } from '../game/definitions'
 import { LootBanner } from '../components/LootBanner'
 
 export function Leaderboard() {
   const { game, players, scores, currentPlayer, nextRound } = useGame()
   const round = game?.round_number ?? 1
   const totalRounds = game?.total_rounds ?? 10
+  const def = getGameDefinition(game?.game_type ?? 'skulking')
 
   const ranked = useMemo(() => {
     return players
@@ -35,7 +37,7 @@ export function Leaderboard() {
       </div>
 
       <div className="content">
-        <LootBanner />
+        {def.hasAlliances && <LootBanner />}
         <div className="scoreboard">
           {ranked.map(({ player, roundPoints, totalPoints, hasBonus, lootBonus }, i) => (
             <div

@@ -1,10 +1,13 @@
 import { useMemo } from 'react'
 import { useGame } from '../game/context'
+import { getGameDefinition } from '../game/definitions'
 
 export function RevealBids() {
   const { game, players, bids, scores, currentPlayer, advanceToScoring } =
     useGame()
   const round = game?.round_number ?? 1
+  const def = getGameDefinition(game?.game_type ?? 'skulking')
+  const cards = def.cardsPerRound(round)
 
   const roundBids = useMemo(
     () =>
@@ -22,7 +25,7 @@ export function RevealBids() {
     [roundBids]
   )
 
-  const diff = totalBids - round
+  const diff = totalBids - cards
   const discrepancyLabel =
     diff === 0
       ? '✅ Perfectly balanced'
@@ -48,7 +51,7 @@ export function RevealBids() {
   return (
     <div className="page">
       <div className="page-header">
-        <div className="round-badge">Round {round} &middot; {round} cards</div>
+        <div className="round-badge">Round {round} &middot; {cards} cards</div>
         <h1>All Bids</h1>
         <p className="subtitle">Play your hands. Admin advances when done.</p>
       </div>
@@ -57,7 +60,7 @@ export function RevealBids() {
         {/* Bid Summary */}
         <div className="bid-summary">
           <span className="bid-summary-total">
-            Total bids: {totalBids} / {round} hands
+            Total bids: {totalBids} / {cards} hands
           </span>
           <span className={`bid-discrepancy ${diff === 0 ? 'balanced' : diff > 0 ? 'over' : 'under'}`}>
             {discrepancyLabel}

@@ -644,3 +644,685 @@
   transform: scale(0.95);
   background: rgba(247, 178, 51, 0.5);
 }
+
+/* ── Game Select ── */
+.game-select-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.game-select-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-16) var(--space-20);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  animation: slideIn var(--dur-normal) var(--ease-decel);
+}
+
+.game-select-card:not(:disabled):active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.game-select-card.coming-soon {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.game-select-emoji {
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.game-select-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.game-select-name {
+  font: var(--text-title-3);
+  color: var(--color-white);
+}
+
+.game-select-desc {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.3;
+}
+
+.game-select-badge {
+  font: var(--text-caption);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+  padding: var(--space-4) var(--space-10);
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.game-select-arrow {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════
+   Midnight Society Styles
+   ═══════════════════════════════════════════════ */
+
+/* ── Role Card ── */
+.role-card {
+  perspective: 600px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: default;
+  color: inherit;
+}
+
+.role-card[disabled] {
+  pointer-events: none;
+}
+
+.role-card:not([disabled]) {
+  cursor: pointer;
+}
+
+.role-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s var(--ease-decel);
+  transform-style: preserve-3d;
+}
+
+.role-card.face-down .role-card-inner {
+  transform: rotateY(180deg);
+}
+
+.role-card-front,
+.role-card-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  padding: var(--space-8);
+}
+
+.role-card-front {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: var(--glass-blur);
+}
+
+.role-card-back {
+  background: linear-gradient(135deg, #1a1a3e, #2d1b4e);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transform: rotateY(180deg);
+}
+
+.role-card.selected .role-card-front {
+  border-color: var(--color-sky);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+.role-card--werewolf .role-card-front {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.role-card--tanner .role-card-front {
+  border-color: rgba(234, 179, 8, 0.5);
+}
+
+/* Sizes */
+.role-card--small {
+  width: 72px;
+  height: 96px;
+}
+
+.role-card--small .role-card-inner {
+  width: 72px;
+  height: 96px;
+}
+
+.role-card--medium {
+  width: 100px;
+  height: 140px;
+}
+
+.role-card--medium .role-card-inner {
+  width: 100px;
+  height: 140px;
+}
+
+.role-card--large {
+  width: 140px;
+  height: 196px;
+}
+
+.role-card--large .role-card-inner {
+  width: 140px;
+  height: 196px;
+}
+
+.role-card-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.role-card--large .role-card-emoji {
+  font-size: 48px;
+}
+
+.role-card--small .role-card-emoji {
+  font-size: 22px;
+}
+
+.role-card-name {
+  font: var(--text-footnote);
+  color: var(--color-white);
+  margin-top: var(--space-4);
+}
+
+.role-card--small .role-card-name {
+  font-size: 10px;
+}
+
+.role-card-team {
+  font-size: 9px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.team-werewolf {
+  color: #ef4444;
+}
+
+.team-tanner {
+  color: #eab308;
+}
+
+.team-village {
+  color: #38bdf8;
+}
+
+.role-card-back-icon {
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.role-card-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: var(--space-4);
+  text-align: center;
+  word-break: break-word;
+}
+
+/* ── Board Grid ── */
+.board-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.board-grid-label {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+}
+
+.board-grid-center,
+.board-grid-players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  justify-content: center;
+}
+
+/* ── Countdown Timer ── */
+.countdown-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.countdown-label {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.countdown-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.countdown-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.countdown-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--text-large-title);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-white);
+}
+
+.countdown-timer.urgent .countdown-value {
+  color: var(--color-destructive);
+  animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ── MS Setup ── */
+.ms-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.ms-presets {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.ms-preset-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: var(--color-white);
+  font: var(--text-subhead);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ms-preset-btn:active {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ms-counter-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font: var(--text-footnote);
+  font-variant-numeric: tabular-nums;
+  margin-left: var(--space-8);
+}
+
+.ms-counter-badge.valid {
+  background: rgba(52, 199, 89, 0.25);
+  color: var(--color-success);
+}
+
+.ms-counter-badge.invalid {
+  background: rgba(239, 68, 68, 0.25);
+  color: var(--color-destructive);
+}
+
+.ms-role-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ms-role-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: var(--space-8) var(--space-12);
+}
+
+.ms-role-emoji {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.ms-role-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ms-role-name {
+  font: var(--text-subhead);
+  color: var(--color-white);
+}
+
+.ms-role-team {
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.ms-role-stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.counter-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.counter-btn:active:not(:disabled) {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.counter-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.counter-value {
+  min-width: 28px;
+  text-align: center;
+  font: var(--text-headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.ms-timer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-8) 0;
+  color: rgba(255, 255, 255, 0.8);
+  font: var(--text-subhead);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.8);
+  padding: var(--space-4) 0;
+  cursor: pointer;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-sky);
+}
+
+/* ── MS Deal ── */
+.ms-deal-reveal {
+  animation: cardReveal 0.8s var(--ease-decel);
+}
+
+@keyframes cardReveal {
+  0% {
+    transform: scale(0.5) rotateY(180deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+/* ── MS Night ── */
+.ms-night-page {
+  background: linear-gradient(180deg, #0a0a15 0%, #1a1025 100%);
+}
+
+.ms-night-moon {
+  font-size: 80px;
+  animation: moonFloat 4s ease-in-out infinite;
+}
+
+@keyframes moonFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.ms-seer-toggle {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-12);
+}
+
+.ms-toggle-btn {
+  flex: 1;
+  padding: var(--space-8) var(--space-12);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font: var(--text-subhead);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ms-toggle-btn.active {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--color-sky);
+  color: var(--color-white);
+}
+
+/* ── MS Voting ── */
+.ms-vote-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.ms-vote-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  color: var(--color-white);
+  font: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.ms-vote-card.voted {
+  border-color: var(--color-sky);
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.ms-vote-card:active {
+  transform: scale(0.97);
+}
+
+.ms-vote-emoji {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.ms-vote-name {
+  font: var(--text-headline);
+  flex: 1;
+}
+
+.ms-vote-hint {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.ms-vote-check {
+  font-size: 18px;
+  color: var(--color-sky);
+  font-weight: 700;
+}
+
+/* ── MS Results ── */
+.ms-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ms-result-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font: var(--text-subhead);
+}
+
+.ms-result-row.dead {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.ms-result-name {
+  flex: 1;
+  color: var(--color-white);
+}
+
+.ms-result-vote {
+  color: rgba(255, 255, 255, 0.5);
+  font: var(--text-footnote);
+}
+
+.ms-result-count {
+  color: rgba(255, 255, 255, 0.4);
+  font: var(--text-footnote);
+  min-width: 50px;
+  text-align: right;
+}
+
+.ms-results-board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.ms-results-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-4) 0;
+}
+
+.ms-results-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ms-result-player-name {
+  font: var(--text-subhead);
+  color: var(--color-white);
+}
+
+.ms-result-changed {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+.ms-results-center {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  justify-content: center;
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: var(--space-4);
+}
+
+.ms-results-center-label {
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.ms-night-log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ms-log-entry {
+  display: flex;
+  gap: var(--space-8);
+  padding: var(--space-4) var(--space-8);
+  font: var(--text-footnote);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ms-log-step {
+  color: rgba(255, 255, 255, 0.3);
+  min-width: 48px;
+  flex-shrink: 0;
+}

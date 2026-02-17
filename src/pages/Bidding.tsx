@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useGame } from '../game/context'
+import { getGameDefinition } from '../game/definitions'
 import { NumberPicker } from '../components/NumberPicker'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -11,6 +12,8 @@ export function Bidding() {
   const [error, setError] = useState('')
 
   const round = game?.round_number ?? 1
+  const def = getGameDefinition(game?.game_type ?? 'skulking')
+  const cards = def.cardsPerRound(round)
 
   // Has this player already bid this round?
   const myBid = useMemo(
@@ -46,7 +49,7 @@ export function Bidding() {
     return (
       <div className="page">
         <div className="page-header">
-          <div className="round-badge">Round {round} &middot; {round} cards</div>
+          <div className="round-badge">Round {round} &middot; {cards} cards</div>
           <h1>Bid Locked</h1>
           <p className="subtitle">You bid {myBid.bid}</p>
         </div>
@@ -67,7 +70,7 @@ export function Bidding() {
   return (
     <div className="page">
       <div className="page-header">
-        <div className="round-badge">Round {round} &middot; {round} cards</div>
+        <div className="round-badge">Round {round} &middot; {cards} cards</div>
         <h1>Your Bid</h1>
         <p className="subtitle">How many tricks will you win?</p>
       </div>
@@ -75,7 +78,7 @@ export function Bidding() {
       <div className="content" style={{ justifyContent: 'center' }}>
         <NumberPicker
           min={0}
-          max={round}
+          max={cards}
           value={selectedBid}
           onChange={setSelectedBid}
         />

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useGame } from '../game/context'
+import { getGameDefinition } from '../game/definitions'
 import { NumberPicker } from '../components/NumberPicker'
 import { BonusPicker } from '../components/BonusPicker'
 import { LootPicker } from '../components/LootPicker'
@@ -19,6 +20,8 @@ export function Scoring() {
   const [error, setError] = useState('')
 
   const round = game?.round_number ?? 1
+  const def = getGameDefinition(game?.game_type ?? 'skulking')
+  const cards = def.cardsPerRound(round)
 
   const myBid = useMemo(
     () =>
@@ -63,14 +66,14 @@ export function Scoring() {
     return (
       <div className="page">
         <div className="page-header">
-          <div className="round-badge">Round {round} &middot; {round} cards</div>
+          <div className="round-badge">Round {round} &middot; {cards} cards</div>
           <h1>Score Locked</h1>
           <p className="subtitle">
             Bid {myBid?.bid ?? '?'} &middot; Won {myResult.tricks_won}
           </p>
         </div>
         <div className="content" style={{ justifyContent: 'center' }}>
-          <LootBanner />
+          {def.hasAlliances && <LootBanner />}
           <div className="waiting">
             <p className="waiting-text">
               Waiting for others<span className="waiting-dots" />
@@ -87,7 +90,7 @@ export function Scoring() {
   return (
     <div className="page">
       <div className="page-header">
-        <div className="round-badge">Round {round} &middot; {round} cards</div>
+        <div className="round-badge">Round {round} &middot; {cards} cards</div>
         <h1>Your Score</h1>
         <p className="subtitle">You bid: {myBid?.bid ?? '?'}</p>
       </div>
@@ -96,27 +99,31 @@ export function Scoring() {
         <div className="section-label">How many tricks did you win?</div>
         <NumberPicker
           min={0}
-          max={round}
+          max={cards}
           value={tricks}
           onChange={setTricks}
         />
 
-        <div style={{ marginTop: 'var(--space-16)' }}>
-          <BonusPicker
-            bonuses={bonuses}
-            onChange={setBonuses}
-            disabled={myBid?.bid === 0}
-          />
-        </div>
+        {def.hasBonuses && (
+          <div style={{ marginTop: 'var(--space-16)' }}>
+            <BonusPicker
+              bonuses={bonuses}
+              onChange={setBonuses}
+              disabled={myBid?.bid === 0}
+            />
+          </div>
+        )}
 
-        <div style={{ marginTop: 'var(--space-16)' }}>
-          <LootPicker
-            players={players}
-            currentPlayerId={currentPlayer?.id ?? ''}
-            lootPartners={lootPartners}
-            onChange={setLootPartners}
-          />
-        </div>
+        {def.hasAlliances && (
+          <div style={{ marginTop: 'var(--space-16)' }}>
+            <LootPicker
+              players={players}
+              currentPlayerId={currentPlayer?.id ?? ''}
+              lootPartners={lootPartners}
+              onChange={setLootPartners}
+            />
+          </div>
+        )}
       </div>
 
       <div className="actions">

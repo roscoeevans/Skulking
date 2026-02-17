@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { supabase } from '../lib/supabase'
-import type { Game, Player, Bid, Result, Score, Bonuses, LootAlliance } from './types'
+import type { Game, Player, Bid, Result, Score, Bonuses, LootAlliance, GameType } from './types'
 import { STORAGE_KEY } from './types'
 
 /* ============================================================
@@ -35,6 +35,7 @@ interface GameContextValue {
   configureAndStart: (totalRounds: number) => Promise<void>
   removePlayer: (playerId: string) => Promise<void>
   acceptLootAlliance: (allianceId: number) => Promise<void>
+  selectGame: (gameType: GameType) => Promise<void>
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -200,12 +201,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
             })
         }
       )
-      .subscribe()
+      .subscribe((status) => {
+        // Re-fetch on every (re)subscribe to catch changes missed during disconnection
+        if (status === 'SUBSCRIBED') {
+          fetchAll()
+        }
+      })
 
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [])
+  }, [fetchAll])
+
+  // ── Resync when tab regains visibility (phone unlock, app switch back) ──
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        fetchAll()
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', fetchAll)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', fetchAll)
+    }
+  }, [fetchAll])
 
   // ── Actions ──
   const joinGame = useCallback(
@@ -304,6 +325,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message)
   }, [])
 
+  const selectGame = useCallback(async (gameType: GameType) => {
+    const { error } = await supabase.rpc('select_game', {
+      p_game_type: gameType,
+    })
+    if (error) throw new Error(error.message)
+  }, [])
+
   return (
     <GameContext.Provider
       value={{
@@ -326,6 +354,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         configureAndStart,
         removePlayer,
         acceptLootAlliance,
+        selectGame,
       }}
     >
       {children}

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useGame } from '../game/context'
+import { getGameDefinition } from '../game/definitions'
 
 export function GameConfig() {
-    const { players, currentPlayer, configureAndStart } = useGame()
-    const [totalRounds, setTotalRounds] = useState(10)
+    const { game, players, currentPlayer, configureAndStart } = useGame()
+    const def = getGameDefinition(game?.game_type ?? 'skulking')
+    const [totalRounds, setTotalRounds] = useState(def.defaultRounds)
     const [starting, setStarting] = useState(false)
     const [error, setError] = useState('')
 
@@ -26,7 +28,7 @@ export function GameConfig() {
         return (
             <div className="page">
                 <div className="page-header">
-                    <h1>Game Setup</h1>
+                    <h1>{def.name} Setup</h1>
                     <p className="subtitle">{players.length} players ready</p>
                 </div>
                 <div className="content" style={{ justifyContent: 'center' }}>
@@ -44,7 +46,7 @@ export function GameConfig() {
     return (
         <div className="page">
             <div className="page-header">
-                <h1>Game Setup</h1>
+                <h1>{def.name} Setup</h1>
                 <p className="subtitle">{players.length} players ready</p>
             </div>
 
@@ -55,7 +57,7 @@ export function GameConfig() {
                         Each round adds one more card — Round 1 deals 1 card, Round {totalRounds} deals {totalRounds}.
                     </p>
                     <div className="rounds-picker">
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                        {Array.from({ length: def.roundRange[1] - def.roundRange[0] + 1 }, (_, i) => i + def.roundRange[0]).map((n) => (
                             <button
                                 key={n}
                                 className={`rounds-pill${n === totalRounds ? ' selected' : ''}`}
