@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useMidnight } from '../../midnight/MidnightContext'
 import { useGame } from '../../game/context'
 import { CountdownTimer } from '../../components/midnight/CountdownTimer'
@@ -7,12 +8,26 @@ export function MsVoting() {
     const { msState, submitVote, endVoting } = useMidnight()
 
     const isAdmin = currentPlayer?.is_admin ?? false
-    const myVote = msState?.my_vote ?? currentPlayer?.id
+    const serverVote = msState?.my_vote ?? currentPlayer?.id
+
+    // Optimistic local vote — updates instantly on tap
+    const [localVote, setLocalVote] = useState(serverVote)
+
+    // Sync local vote when server state refreshes
+    useEffect(() => {
+        setLocalVote(serverVote)
+    }, [serverVote])
+
+    const displayedVote = localVote
 
     async function handleVote(targetId: string) {
+        // Optimistic update — show checkmark immediately
+        setLocalVote(targetId)
         try {
             await submitVote(targetId)
         } catch (e: unknown) {
+            // Revert on failure
+            setLocalVote(serverVote)
             console.error(e instanceof Error ? e.message : 'Vote failed')
         }
     }
@@ -33,13 +48,13 @@ export function MsVoting() {
                 <div className="ms-vote-grid">
                     {/* Self-vote option */}
                     <button
-                        className={`ms-vote-card ${myVote === currentPlayer?.id ? 'voted' : ''}`}
+                        className={`ms-vote-card ${displayedVote === currentPlayer?.id ? 'voted' : ''}`}
                         onClick={() => handleVote(currentPlayer?.id ?? '')}
                     >
                         <span className="ms-vote-emoji">✋</span>
                         <span className="ms-vote-name">No Kill</span>
                         <span className="ms-vote-hint">(vote for yourself)</span>
-                        {myVote === currentPlayer?.id && <span className="ms-vote-check">✓</span>}
+                        {displayedVote === currentPlayer?.id && <span className="ms-vote-check">✓</span>}
                     </button>
 
                     {/* Other players */}
@@ -48,12 +63,12 @@ export function MsVoting() {
                         .map((p) => (
                             <button
                                 key={p.id}
-                                className={`ms-vote-card ${myVote === p.id ? 'voted' : ''}`}
+                                className={`ms-vote-card ${displayedVote === p.id ? 'voted' : ''}`}
                                 onClick={() => handleVote(p.id)}
                             >
                                 <span className="ms-vote-emoji">🎯</span>
                                 <span className="ms-vote-name">{p.name}</span>
-                                {myVote === p.id && <span className="ms-vote-check">✓</span>}
+                                {displayedVote === p.id && <span className="ms-vote-check">✓</span>}
                             </button>
                         ))}
                 </div>

@@ -19,8 +19,8 @@ import { useNightActivities } from '../../midnight/useNightActivities'
 
 // Time before role action submit button unlocks (ms)
 const ROLE_ACTION_LOCK_MS = 1500
-// Toast duration after action submission (ms)
-const TOAST_DURATION_MS = 1500
+// Toast duration for non-reveal actions (ms)
+const TOAST_DURATION_MS = 2000
 
 type NightView = 'activity' | 'role-action' | 'toast'
 
@@ -144,6 +144,10 @@ export function MsNight() {
 
     const canSubmit = selected.length === maxSelect && !submitting && !submitLocked
 
+    // Does this action reveal info the player needs to see?
+    const isRevealAction = (result: Record<string, unknown>) =>
+        Boolean(result.saw_role) || Boolean(result.saw_roles) || Boolean(result.new_role)
+
     async function handleSubmit() {
         if (!canSubmit) return
         setSubmitting(true)
@@ -153,15 +157,22 @@ export function MsNight() {
             setActionResult(result)
             setHasActed(true)
 
-            // Show toast, then return to activities
+            // Show toast — auto-dismiss for non-reveal actions,
+            // stay visible for reveals so the player can actually read them
             setView('toast')
-            toastTimerRef.current = setTimeout(() => {
-                setView('activity')
-            }, TOAST_DURATION_MS)
+            if (!isRevealAction(result)) {
+                toastTimerRef.current = setTimeout(() => {
+                    setView('activity')
+                }, TOAST_DURATION_MS)
+            }
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : 'Action failed')
         }
         setSubmitting(false)
+    }
+
+    function dismissToast() {
+        setView('activity')
     }
 
     // ── Render ──
@@ -181,37 +192,59 @@ export function MsNight() {
                             <div className="night-toast-check">✓</div>
                             <p className="night-toast-text">Action recorded</p>
 
-                            {/* Show result briefly */}
+                            {/* Reveal: single role (werewolf peek / seer peek) */}
                             {actionResult && Boolean(actionResult.saw_role) && (
-                                <div className="night-toast-detail">
-                                    <span className="night-toast-emoji">
+                                <div className="night-toast-reveal">
+                                    <span className="night-toast-reveal-emoji">
                                         {ROLES[actionResult.saw_role as string]?.emoji}
                                     </span>
-                                    <span>{ROLES[actionResult.saw_role as string]?.name}</span>
+                                    <span className="night-toast-reveal-name">
+                                        {ROLES[actionResult.saw_role as string]?.name}
+                                    </span>
                                 </div>
                             )}
+                            {/* Reveal: two center cards (seer 2-center) */}
                             {actionResult && Boolean(actionResult.saw_roles) && (
-                                <div className="night-toast-detail">
+                                <div className="night-toast-reveal-multi">
                                     {(actionResult.saw_roles as string[]).map((r, i) => (
-                                        <span key={i} className="night-toast-emoji-inline">
-                                            {ROLES[r]?.emoji} {ROLES[r]?.name}
-                                        </span>
+                                        <div key={i} className="night-toast-reveal">
+                                            <span className="night-toast-reveal-emoji">
+                                                {ROLES[r]?.emoji}
+                                            </span>
+                                            <span className="night-toast-reveal-name">
+                                                {ROLES[r]?.name}
+                                            </span>
+                                        </div>
                                     ))}
                                 </div>
                             )}
+                            {/* Reveal: robber's new role */}
                             {actionResult && Boolean(actionResult.new_role) && (
-                                <div className="night-toast-detail">
-                                    <span>You are now </span>
-                                    <span className="night-toast-emoji">
+                                <div className="night-toast-reveal">
+                                    <p className="night-toast-reveal-label">You are now</p>
+                                    <span className="night-toast-reveal-emoji">
                                         {ROLES[actionResult.new_role as string]?.emoji}
                                     </span>
-                                    <span>{ROLES[actionResult.new_role as string]?.name}</span>
+                                    <span className="night-toast-reveal-name">
+                                        {ROLES[actionResult.new_role as string]?.name}
+                                    </span>
                                 </div>
                             )}
+                            {/* Non-reveal: troublemaker swap */}
                             {actionResult && Boolean(actionResult.swapped) && (
                                 <div className="night-toast-detail">
                                     <span>Cards swapped!</span>
                                 </div>
+                            )}
+
+                            {/* Dismiss button for reveal actions */}
+                            {actionResult && isRevealAction(actionResult) && (
+                                <button
+                                    className="btn-secondary night-toast-dismiss"
+                                    onClick={dismissToast}
+                                >
+                                    Got it
+                                </button>
                             )}
                         </div>
                     </div>

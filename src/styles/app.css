@@ -1623,6 +1623,46 @@
   border-radius: 8px;
 }
 
+/* ── Prominent Reveal (werewolf peek, seer, robber) ── */
+.night-toast-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-16);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  min-width: 160px;
+}
+
+.night-toast-reveal-emoji {
+  font-size: 64px;
+  line-height: 1;
+}
+
+.night-toast-reveal-name {
+  font: var(--text-title-3);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.night-toast-reveal-label {
+  font: var(--text-subhead);
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.night-toast-reveal-multi {
+  display: flex;
+  gap: var(--space-12);
+}
+
+.night-toast-dismiss {
+  margin-top: var(--space-8);
+  min-width: 120px;
+}
+
 /* ── Night Activities Button (Results page) ── */
 .night-activities-btn {
   width: 100%;
