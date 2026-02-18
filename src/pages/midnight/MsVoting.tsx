@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useMidnight } from '../../midnight/MidnightContext'
 import { useGame } from '../../game/context'
 import { CountdownTimer } from '../../components/midnight/CountdownTimer'
@@ -13,15 +13,21 @@ export function MsVoting() {
     // Optimistic local vote — updates instantly on tap
     const [localVote, setLocalVote] = useState(serverVote)
 
-    // Sync local vote when server state refreshes
+    // Guard: don't let server refetches revert optimistic vote while RPC is in-flight
+    const submittingRef = useRef(false)
+
+    // Sync local vote when server confirms — but skip while a submission is pending
     useEffect(() => {
-        setLocalVote(serverVote)
+        if (!submittingRef.current) {
+            setLocalVote(serverVote)
+        }
     }, [serverVote])
 
     const displayedVote = localVote
 
     async function handleVote(targetId: string) {
         // Optimistic update — show checkmark immediately
+        submittingRef.current = true
         setLocalVote(targetId)
         try {
             await submitVote(targetId)
@@ -29,6 +35,8 @@ export function MsVoting() {
             // Revert on failure
             setLocalVote(serverVote)
             console.error(e instanceof Error ? e.message : 'Vote failed')
+        } finally {
+            submittingRef.current = false
         }
     }
 
