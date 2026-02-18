@@ -3,7 +3,7 @@ import { useGame } from '../game/context'
 import { SwipeableRow } from '../components/SwipeableRow'
 
 export function Lobby() {
-  const { game, players, currentPlayer, joinGame, startGame, removePlayer, rejoinAs } = useGame()
+  const { game, players, currentPlayer, joinGame, startGame, removePlayer } = useGame()
   const [name, setName] = useState('')
   const [isRocky, setIsRocky] = useState(false)
   const [isSam, setIsSam] = useState(false)
@@ -44,46 +44,21 @@ export function Lobby() {
     }
   }
 
-  function handleRejoin(playerId: string) {
-    try {
-      rejoinAs(playerId)
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Failed to rejoin')
-    }
-  }
 
-  // ── Rejoin mode: game is in progress but we lost our session ──
+
+  // ── Game in progress — unknown visitor ──
   if (isGameInProgress && !currentPlayer) {
     return (
-      <div className="page">
-        <div className="page-header">
-          <h1>Rejoin Game</h1>
-          <p className="subtitle">Tap your name to get back in</p>
+      <div className="page" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+          <p style={{ fontSize: '48px', lineHeight: 1 }}>🌙</p>
+          <h1 style={{ font: 'var(--text-title-2)', color: 'var(--color-white)' }}>
+            Game in Progress
+          </h1>
+          <p style={{ font: 'var(--text-body)', color: 'rgba(255,255,255,0.6)' }}>
+            A game is currently underway.<br />Check back when it's over!
+          </p>
         </div>
-
-        <div className="content">
-          <div className="player-list">
-            {players.map((p) => (
-              <button
-                key={p.id}
-                className="ms-vote-card"
-                onClick={() => handleRejoin(p.id)}
-              >
-                <span className="ms-vote-emoji">👤</span>
-                <span className="ms-vote-name">{p.name}</span>
-                {p.is_admin && <span className="admin-badge">Admin</span>}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {error && (
-          <div className="actions">
-            <p style={{ font: 'var(--text-footnote)', color: 'var(--color-watermelon)', textAlign: 'center' }}>
-              {error}
-            </p>
-          </div>
-        )}
       </div>
     )
   }
